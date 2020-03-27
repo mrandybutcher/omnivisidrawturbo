@@ -1,3 +1,10 @@
+# Getting Started
+* Install [React Dev Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
+* Install [Redux Dev Tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
+* In redux dev tools settings -> Filter Actions in DevTools -> Hide the following "ui/mouseMove"
+* Then run "yarn start"
+* Send pull requests
+
 # Tech Debt
 * [ ] Combine selection scale/transform to single transform that is all box based
 * [ ] Write some Tests
