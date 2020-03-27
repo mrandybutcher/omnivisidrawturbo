@@ -1,7 +1,7 @@
 import {createReducer} from "@reduxjs/toolkit";
 import {_selectionScaleDragEnd, _selectionTranslateDragEnd} from "../selection/actions";
 import {AnyElement, ElementIdArray, elementScale, elementTranslate} from "../../lib/elements";
-import {createElement} from "./actions";
+import {createElement, scaleElement, translateElement} from "./actions";
 
 export interface ElementsState {
     readonly elements: { [index: string]: AnyElement },
@@ -54,7 +54,8 @@ const initialElementsState: ElementsState = {
 
 const elementsReducer = createReducer(initialElementsState as ElementsState, builder =>
     builder
-        .addCase(_selectionTranslateDragEnd, (state, action) => {
+        // .addCase(_selectionTranslateDragEnd, (state, action) => {
+        .addCase(translateElement, (state, action) => {
             const {elementIds, point} = action.payload;
 
             elementIds.forEach(elementId => {
@@ -65,7 +66,8 @@ const elementsReducer = createReducer(initialElementsState as ElementsState, bui
             });
 
         })
-        .addCase(_selectionScaleDragEnd, (state, action) => {
+        // .addCase(_selectionScaleDragEnd, (state, action) => {
+        .addCase(scaleElement, (state, action) => {
             const {elementIds, startBox, targetBox} = action.payload;
 
             elementIds.forEach(elementId => {

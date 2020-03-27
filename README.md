@@ -1,5 +1,5 @@
 # Tech Debt
-* [ ] Combine selection scale/transform to single transform thats all box based
+* [ ] Combine selection scale/transform to single transform that is all box based
 * [ ] Write some Tests
 * [ ] Use reselect for more component selectors to speed things up
 * [ ] Abstract mousedown to detect clicks and ready for touch support

@@ -7,6 +7,8 @@ import {Box} from "../../lib/geometry/box";
 import {withPayloadType} from "../../lib/utils";
 import {getSelectedElementIds, getSelectionDelta, getSelectionStartBox, getSelectionTargetBox} from "./selectors";
 import {getBoxForElementIds} from "../elements/selectors";
+import {scaleElement, translateElement} from "../elements/actions";
+import {batch} from "react-redux";
 
 export const _selectionSetItems          = createAction("selection/setItems", withPayloadType<{ elementIds: ElementIdArray, box: Box }>());
 export const selectionClear              = createAction("selection/clear", withPayloadType<void>());
@@ -16,6 +18,7 @@ export const _selectionTranslateDragEnd  = createAction("selection/translateDrag
 export const selectionScaleDragStart     = createAction("selection/scaleDragStart", withPayloadType<{ direction: Direction, point: Point }>());
 export const selectionScaleDrag          = createAction("selection/scaleDrag", withPayloadType<{ direction: Direction, point: Point }>());
 export const _selectionScaleDragEnd      = createAction("selection/scaleDragEnd", withPayloadType<{ elementIds: ElementIdArray, startBox?: Box, targetBox?: Box }>());
+
 
 export const selectionSetItem = (elementId: ElementId): AppThunk => (dispatch, getState) => {
     const {elements} = getState();
@@ -40,7 +43,10 @@ export const selectionTranslateDragEnd = (): AppThunk => (dispatch, getState) =>
     const point       = getSelectionDelta(selection);
     const elementIds  = getSelectedElementIds(selection)
 
-    dispatch(_selectionTranslateDragEnd({elementIds, point}))
+    batch(() => {
+        dispatch(_selectionTranslateDragEnd({elementIds, point}))
+        dispatch(translateElement({elementIds, point}))
+    })
 }
 
 export const selectionScaleDragEnd = (payload: { direction: Direction, point: Point }): AppThunk => (dispatch, getState) => {
@@ -49,6 +55,9 @@ export const selectionScaleDragEnd = (payload: { direction: Direction, point: Po
     const targetBox   = getSelectionTargetBox(selection)
     const elementIds  = getSelectedElementIds(selection)
 
-    dispatch(_selectionScaleDragEnd({elementIds, startBox, targetBox}))
+    batch(() => {
+        dispatch(_selectionScaleDragEnd({elementIds, startBox, targetBox}))
+        dispatch(scaleElement({elementIds, startBox, targetBox}))
+    });
 }
 
