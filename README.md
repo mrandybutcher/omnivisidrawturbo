@@ -7,7 +7,8 @@
 * [ ] Replace random id generation with proper uuid's
 * [ ] Dig into performance a bit once reselect done
 * [ ] Less OMG UI
-* [ ] Refactor the Selection/Pen tool stuff out separate
+* [ ] Refactor the Selection/Pen tool stuff out Canvas
+* [ ] Sort out all the floating-point geometry
 
 # Deployment
 * [ ] Setup CI
@@ -66,6 +67,13 @@
 * [x] Ability to free-hand draw polylines with a pen
 * [x] Switch to Selection Tool after drawing with pen
 * [ ] Tackle performance problems as result of Pen tool
+* [ ] Change mouse icon for pen tool
+
+## Point Tool
+* [ ] Toolbar button to select point tool
+* [ ] Ability to move individual points in polylines
+* [ ] Ability to move individual points in lines
+* [ ] Ability to maniuplate paths when they exist
 
 ## Chrome
 * [x] Basic Window Chrome with header/footer/left/right
