@@ -4,7 +4,7 @@ import {pointsToSvgPoints} from "../../lib/geometry/points";
 import {selectionAddItem, selectionSetItem} from "../selection/actions";
 import {useDispatch, useSelector} from "react-redux";
 import {selectTool} from "../selectors";
-import {Tool} from "../canvas/canvasReducer";
+import {Tool} from "../ui/uiReducer";
 
 interface ElementProps {
     element: AnyElement;

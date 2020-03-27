@@ -3,10 +3,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {useDrag} from "../../hooks/useDrag";
 import {Point, pointZoom} from "../../lib/geometry/point";
 import {selectionDragBoxDrag, selectionDragBoxDragEnd, selectionDragBoxDragStart} from "../selectionDragBox/actions";
-import {canvasMouseLeave, canvasMouseMove, changeTool} from "./actions";
 import {selectCanvasSize, selectTool, selectZoom} from "../selectors";
-import {Tool} from "./canvasReducer";
 import {addPointToPolyLine, createElement} from "../elements/actions";
+import {canvasMouseLeave, canvasMouseMove, changeTool} from "../ui/actions";
+import {Tool} from "../ui/uiReducer";
 
 
 function getPos(e: MouseEvent | React.MouseEvent<Element>): Point {
@@ -18,10 +18,10 @@ function getPos(e: MouseEvent | React.MouseEvent<Element>): Point {
 
 
 export default function Canvas({children}: { children: React.ReactNode }) {
-    const size     = useSelector(selectCanvasSize)
-    const zoom     = useSelector(selectZoom)
-    const tool = useSelector(selectTool)
-    const dispatch = useDispatch()
+    const size                      = useSelector(selectCanvasSize)
+    const zoom                      = useSelector(selectZoom)
+    const tool                      = useSelector(selectTool)
+    const dispatch                  = useDispatch()
     const [penToolId, setPenToolId] = useState<string | undefined>()
 
     let onSelectDragStart = useCallback((e: MouseEvent | React.MouseEvent<Element, MouseEvent>) => {
@@ -65,7 +65,7 @@ export default function Canvas({children}: { children: React.ReactNode }) {
         }))
     }, [dispatch, zoom]);
     let onPenDrag      = useCallback((e: MouseEvent | React.MouseEvent<Element, MouseEvent>) => {
-        if(penToolId){
+        if (penToolId) {
             dispatch(addPointToPolyLine({elementId: penToolId, point: pointZoom(getPos(e), zoom)}));
         }
     }, [dispatch, zoom, penToolId]);

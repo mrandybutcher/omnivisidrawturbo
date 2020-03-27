@@ -4,7 +4,7 @@ import {
     selectCanvasState,
     selectElementsState,
     selectSelectionDragBoxState,
-    selectSelectionState
+    selectSelectionState, selectUiState
 } from "../app/rootReducer";
 import {Point} from "../lib/geometry/point";
 import {Box} from "../lib/geometry/box";
@@ -16,8 +16,9 @@ import {
 } from "./selection/selectors";
 import {getAllElements, getElementById, getElementsByIds} from "./elements/selectors";
 import {getDragBox} from "./selectionDragBox/selectors";
-import {getCanvasSize, getMousePosition, getTool, getZoom} from "./canvas/selectors";
+import {getCanvasSize} from "./canvas/selectors";
 import {createSelector} from "@reduxjs/toolkit";
+import {getMousePosition, getTool, getZoom} from "./ui/selectors";
 
 export function selectSelectedElementsTransformed(state: RootState): AnyElement[] {
     const selectionState       = selectSelectionState(state)
@@ -53,12 +54,10 @@ export function selectAllElementsTransformed(state: RootState): (AnyElement)[] {
 }
 
 
-export function selectCanvasSize(state: RootState) {
-    return getCanvasSize(selectCanvasState(state))
-}
+export const selectCanvasSize = createSelector(selectCanvasState, getCanvasSize)
 
 export function selectMousePosition(state: RootState): Point | undefined {
-    return getMousePosition(selectCanvasState(state))
+    return getMousePosition(selectUiState(state))
 }
 
 export const selectAllElements = createSelector(selectElementsState, getAllElements)
@@ -101,5 +100,5 @@ export function selectSelectionDragBox(state: RootState): Box | undefined {
     return getDragBox(selectSelectionDragBoxState(state))
 }
 
-export const selectZoom = createSelector(selectCanvasState, getZoom)
-export const selectTool = createSelector(selectCanvasState, getTool)
+export const selectZoom = createSelector(selectUiState, getZoom)
+export const selectTool = createSelector(selectUiState, getTool)
