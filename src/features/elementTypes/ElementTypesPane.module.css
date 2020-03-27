@@ -1,0 +1,14 @@
+.root {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.element {
+    border: #313335 1px solid;
+    width: 4em;
+    height: 4em;
+    margin: 2px;
+    text-align: center;
+    user-select: none;
+}
