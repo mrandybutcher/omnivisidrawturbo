@@ -1,7 +1,6 @@
 import {createReducer} from "@reduxjs/toolkit";
-import {_selectionScaleDragEnd, _selectionTranslateDragEnd} from "../selection/actions";
 import {AnyElement, ElementIdArray, elementScale, elementTranslate} from "../../lib/elements";
-import {createElement, scaleElement, translateElement} from "./actions";
+import {addPointToPolyLine, createElement, scaleElement, translateElement} from "./actions";
 
 export interface ElementsState {
     readonly elements: { [index: string]: AnyElement },
@@ -54,7 +53,6 @@ const initialElementsState: ElementsState = {
 
 const elementsReducer = createReducer(initialElementsState as ElementsState, builder =>
     builder
-        // .addCase(_selectionTranslateDragEnd, (state, action) => {
         .addCase(translateElement, (state, action) => {
             const {elementIds, point} = action.payload;
 
@@ -66,7 +64,6 @@ const elementsReducer = createReducer(initialElementsState as ElementsState, bui
             });
 
         })
-        // .addCase(_selectionScaleDragEnd, (state, action) => {
         .addCase(scaleElement, (state, action) => {
             const {elementIds, startBox, targetBox} = action.payload;
 
@@ -81,6 +78,14 @@ const elementsReducer = createReducer(initialElementsState as ElementsState, bui
             const newElement              = action.payload
             state.elements[newElement.id] = newElement
             state.allElementIds.push(newElement.id)
+        })
+        .addCase(addPointToPolyLine, (state, action) => {
+            const {elementId, point} = action.payload
+            const polyLine = state.elements[elementId]
+            if(polyLine && polyLine.type === "polyline"){
+                polyLine.geometry.push(point)
+            }
+
         })
 );
 

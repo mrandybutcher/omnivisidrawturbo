@@ -16,7 +16,7 @@ import {
 } from "./selection/selectors";
 import {getAllElements, getElementById, getElementsByIds} from "./elements/selectors";
 import {getDragBox} from "./selectionDragBox/selectors";
-import {getCanvasSize, getMousePosition, getZoom} from "./canvas/selectors";
+import {getCanvasSize, getMousePosition, getTool, getZoom} from "./canvas/selectors";
 import {createSelector} from "@reduxjs/toolkit";
 
 export function selectSelectedElementsTransformed(state: RootState): AnyElement[] {
@@ -102,3 +102,4 @@ export function selectSelectionDragBox(state: RootState): Box | undefined {
 }
 
 export const selectZoom = createSelector(selectCanvasState, getZoom)
+export const selectTool = createSelector(selectCanvasState, getTool)

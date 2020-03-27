@@ -1,6 +1,12 @@
 import {createReducer} from "@reduxjs/toolkit";
-import {canvasMouseLeave, canvasMouseMove, canvasZoom} from "./actions";
+import {canvasMouseLeave, canvasMouseMove, canvasZoom, changeTool} from "./actions";
 import {Point} from "../../lib/geometry/point";
+
+export enum Tool {
+    SelectionTool,
+    PointTool,
+    PenTool
+}
 
 
 interface FixedCanvas {
@@ -17,6 +23,7 @@ export interface CanvasState {
     readonly canvasType: FixedCanvas | InfiniteCanvas
     readonly mouse?: Point
     readonly zoom: number
+    readonly tool: Tool
 }
 
 
@@ -26,7 +33,8 @@ const initialState: CanvasState = {
         width: 10000,
         height: 10000
     },
-    zoom: 1
+    zoom: 1,
+    tool: Tool.SelectionTool
 }
 
 const canvasReducer = createReducer(initialState as CanvasState, builder =>
@@ -39,6 +47,9 @@ const canvasReducer = createReducer(initialState as CanvasState, builder =>
         })
         .addCase(canvasZoom, (state, action) => {
             state.zoom = action.payload
+        })
+        .addCase(changeTool, (state, action) => {
+            state.tool = action.payload
         })
 )
 

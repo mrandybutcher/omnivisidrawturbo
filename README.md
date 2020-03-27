@@ -7,6 +7,7 @@
 * [ ] Replace random id generation with proper uuid's
 * [ ] Dig into performance a bit once reselect done
 * [ ] Less OMG UI
+* [ ] Refactor the Selection/Pen tool stuff out separate
 
 # Deployment
 * [ ] Setup CI
@@ -58,19 +59,23 @@
 * [ ] Move selection to top/bottom
 * [ ] Move selection up/down
 * [ ] Press delete key to delete selected elements
+* [x] Toolbar button to enable Selection Tool
 
 ## Pen Tool 
-* [ ] Ability to free-hand draw paths with a pen
+* [x] Toolbar button to select pen tool
+* [x] Ability to free-hand draw polylines with a pen
+* [x] Switch to Selection Tool after drawing with pen
+* [ ] Tackle performance problems as result of Pen tool
 
 ## Chrome
 * [x] Basic Window Chrome with header/footer/left/right
 * [x] Pane with title component
+* [x] Toolbar 
 * [ ] Load theme from reducer
 * [ ] Expandable/Collapsable left/right columns
 * [ ] Resizable width of left/right columns
 * [ ] Expandable/Collapsable panes
 * [ ] Theme Pane
-* [x] Toolbar 
 
 ## Status Bar
 * [x] Current canvas-relative mouse coords on statusbar
@@ -168,6 +173,7 @@
 * Arbitrarily nested lists
 * TODO lists
 * Task lists
+* Lists such as this one /|\
 ## Tables
 * Like MS Access
 ## Spreadsheets
@@ -176,4 +182,3 @@
 ## Tickets / Issues
 ## Kanban style boards
 
-## Test Pull Request!
