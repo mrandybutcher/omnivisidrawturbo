@@ -71,9 +71,9 @@
 
 ## Point Tool
 * [ ] Toolbar button to select point tool
-* [ ] Ability to move individual points in polylines
-* [ ] Ability to move individual points in lines
-* [ ] Ability to maniuplate paths when they exist
+* [ ] Move individual points in polylines
+* [ ] Move individual points in lines
+* [ ] Manipulate paths 
 
 ## Chrome
 * [x] Basic Window Chrome with header/footer/left/right
