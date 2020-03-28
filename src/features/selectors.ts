@@ -4,9 +4,9 @@ import {
     selectCanvasState,
     selectElementsState,
     selectSelectionDragBoxState,
-    selectSelectionState, selectUiState
+    selectSelectionState,
+    selectUiState
 } from "../app/rootReducer";
-import {Point} from "../lib/geometry/point";
 import {Box} from "../lib/geometry/box";
 import {
     getSelectedElementIds,
@@ -19,13 +19,6 @@ import {getDragBox} from "./selectionDragBox/selectors";
 import {getCanvasSize} from "./canvas/selectors";
 import {createSelector} from "@reduxjs/toolkit";
 import {getMousePosition, getTool, getZoom} from "./ui/selectors";
-
-export function selectSelectedElementsTransformed(state: RootState): AnyElement[] {
-    const selectionState       = selectSelectionState(state)
-    const selectedElementIdSet = getSelectedElementIdSet(selectionState)
-    const allElements          = selectAllElementsTransformed(state)
-    return allElements.filter(it => selectedElementIdSet.has(it.id))
-}
 
 export function selectAllElementsTransformed(state: RootState): (AnyElement)[] {
     // @TODO probably a more efficient way to do this
@@ -56,20 +49,11 @@ export function selectAllElementsTransformed(state: RootState): (AnyElement)[] {
 
 export const selectCanvasSize = createSelector(selectCanvasState, getCanvasSize)
 
-export function selectMousePosition(state: RootState): Point | undefined {
-    return getMousePosition(selectUiState(state))
-}
+export const selectMousePosition = createSelector(selectUiState, getMousePosition)
 
 export const selectAllElements = createSelector(selectElementsState, getAllElements)
 
-// export function selectAllElements(state: RootState): AnyElement[] {
-//     return getAllElements(selectElementsState(state))
-//
-// }
-
-export function selectAllElementIds(state: RootState): ElementIdArray {
-    return selectElementsState(state).allElementIds
-}
+export const selectAllElementIds = createSelector(selectElementsState, (state) => state.allElementIds)
 
 export function selectElementsByIds(state: RootState, ids: ElementIdArray): AnyElement[] {
     return getElementsByIds(selectElementsState(state), ids)
@@ -91,14 +75,16 @@ export function selectSelectionBox(state: RootState): Box | undefined {
 
 const selectSelectedElementIds = createSelector(selectSelectionState, getSelectedElementIds)
 
-export const selectSelectedElementIdSet = createSelector(selectSelectedElementIds, (selectedElementIds) =>{
-    return new Set(selectedElementIds)
-})
+export const selectSelectedElementIdSet = createSelector(selectSelectedElementIds,
+    (selectedElementIds) => new Set(selectedElementIds)
+)
 
-
-export function selectSelectionDragBox(state: RootState): Box | undefined {
-    return getDragBox(selectSelectionDragBoxState(state))
-}
+export const selectSelectionDragBox = createSelector(selectSelectionDragBoxState, getDragBox);
 
 export const selectZoom = createSelector(selectUiState, getZoom)
 export const selectTool = createSelector(selectUiState, getTool)
+
+export const selectSelectedElementsTransformed = createSelector(
+    [selectSelectedElementIdSet, selectAllElementsTransformed],
+    (selectedElementIdSet, allElements) => allElements.filter(it => selectedElementIdSet.has(it.id))
+)
