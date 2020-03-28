@@ -1,6 +1,7 @@
 import {createReducer} from "@reduxjs/toolkit";
 import {AnyElement, ElementIdArray, elementScale, elementTranslate} from "../../lib/elements";
 import {addPointToPolyLine, createElement, scaleElement, translateElement} from "./actions";
+import {pointEquals} from "../../lib/geometry/point";
 
 export interface ElementsState {
     readonly elements: { [index: string]: AnyElement },
@@ -83,7 +84,9 @@ const elementsReducer = createReducer(initialElementsState as ElementsState, bui
             const {elementId, point} = action.payload
             const polyLine = state.elements[elementId]
             if(polyLine && polyLine.type === "polyline"){
-                polyLine.geometry.push(point)
+                if(!pointEquals(polyLine.geometry[polyLine.geometry.length-1], point)) {
+                    polyLine.geometry.push(point)
+                }
             }
 
         })

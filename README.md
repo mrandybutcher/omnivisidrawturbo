@@ -77,10 +77,19 @@
 * [ ] Change mouse icon for pen tool
 
 ## Point Tool
-* [ ] Toolbar button to select point tool
+* [x] Toolbar button to select point tool
 * [ ] Move individual points in polylines
 * [ ] Move individual points in lines
 * [ ] Manipulate paths 
+
+## Connection Tool
+* [ ] Toolbar button to select connection tool
+* [ ] Draw straight lines by dragging between two points
+
+## Shape Tool
+* [ ] Toolbar button to select Shape Tool
+* [ ] Toolbar button lets you select shape to draw
+* [ ] Draw shapes directly on canvas using shape tool
 
 ## Chrome
 * [x] Basic Window Chrome with header/footer/left/right

@@ -5,7 +5,8 @@ import {Point} from "../../lib/geometry/point";
 export enum Tool {
     SelectionTool,
     PointTool,
-    PenTool
+    PenTool,
+    ConnectionTool
 }
 
 export interface UiState {

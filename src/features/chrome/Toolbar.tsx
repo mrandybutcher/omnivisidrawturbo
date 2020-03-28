@@ -19,6 +19,9 @@ export default function Toolbar() {
     const onPenTool       = useCallback((e) => {
         dispatch(changeTool(Tool.PenTool))
     }, [dispatch])
+    const onConnectionTool       = useCallback((e) => {
+        dispatch(changeTool(Tool.ConnectionTool))
+    }, [dispatch])
 
 
     const onZoomChange = useCallback((e) => {
@@ -37,5 +40,6 @@ export default function Toolbar() {
                 onClick={onSelectionTool}>Selection</button>
         <button className={tool === Tool.PointTool ? styles.selectedTool : ""} onClick={onPointTool}>Point</button>
         <button className={tool === Tool.PenTool ? styles.selectedTool : ""} onClick={onPenTool}>Pen</button>
+        <button className={tool === Tool.ConnectionTool ? styles.selectedTool : ""} onClick={onConnectionTool}>Connection</button>
     </span>
 }
