@@ -1,34 +1,13 @@
-import React, {useCallback} from "react";
+import React from "react";
 import {AnyElement} from "../../lib/elements";
 import {pointsToSvgPoints} from "../../lib/geometry/points";
-import {selectionAddItem, selectionSetItem} from "../selection/actions";
-import {useDispatch, useSelector} from "react-redux";
-import {selectTool} from "../selectors";
-import {Tool} from "../ui/uiReducer";
+import useTool from "../../hooks/useTool";
 
-interface ElementProps {
-    element: AnyElement;
-}
+export default function Element({element}: { element: AnyElement }) {
+    const tool = useTool();
 
-
-export default function Element({element}: ElementProps) {
-    const dispatch = useDispatch()
-    const tool     = useSelector(selectTool)
-
-    const onMouseDown = useCallback((e: React.MouseEvent<SVGElement>) => {
-        if (tool === Tool.SelectionTool) {
-            e.stopPropagation()
-        }
-    }, [tool]);
-
-    const onClick = useCallback((e: React.MouseEvent<SVGElement>) => {
-        if (tool === Tool.SelectionTool) {
-            e.preventDefault();
-            e.stopPropagation();
-            const action = e.shiftKey ? selectionAddItem : selectionSetItem
-            dispatch(action(element.id));
-        }
-    }, [dispatch, tool, element.id]);
+    const onClick     = tool.createElementMouseClick(element.id)
+    const onMouseDown = tool.onElementMouseDown
 
     switch (element.type) {
         case "rect":

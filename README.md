@@ -14,7 +14,7 @@
 * [ ] Replace random id generation with proper uuid's
 * [ ] Dig into performance a bit once reselect done
 * [ ] Less OMG UI
-* [ ] Refactor the Selection/Pen tool stuff out Canvas
+* [x] Refactor the Selection/Pen tool stuff out Canvas
 * [ ] Sort out all the floating-point geometry
 
 # Deployment
@@ -83,7 +83,7 @@
 * [ ] Manipulate paths 
 
 ## Connection Tool
-* [ ] Toolbar button to select connection tool
+* [x] Toolbar button to select connection tool
 * [ ] Draw straight lines by dragging between two points
 
 ## Shape Tool
