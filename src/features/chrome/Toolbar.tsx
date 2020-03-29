@@ -35,7 +35,7 @@ export default function Toolbar() {
             <option value={1}>100%</option>
             <option value={2}>200%</option>
         </select>
-        </span><span> Current Tool:
+        </span><span> Current Tool: &nbsp;
         <button className={tool === Tool.SelectionTool ? styles.selectedTool : ""}
                 onClick={onSelectionTool}>Selection</button>
         <button className={tool === Tool.PointTool ? styles.selectedTool : ""} onClick={onPointTool}>Point</button>
