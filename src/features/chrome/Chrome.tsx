@@ -7,7 +7,6 @@ import ElementListPane from "../elements/ElementListPane";
 import {SelectionPane} from "../selection/SelectionPane";
 import Toolbar from "./Toolbar";
 import Mainmenu from '../navigation/mainmenu';
-import {Navbar } from 'react-bootstrap';
 
 interface ChromeProps {
     children: React.ReactNode;
@@ -17,16 +16,8 @@ export default function Chrome({children}: ChromeProps) {
     return (
         <div className={styles.root}>
             <div className={styles.header}>
-<<<<<<< HEAD
-                {/* <b>OmniVisiDraw TURBO &nbsp;</b> */}
-                <Navbar bg="dark" variant="dark">
-                    <Navbar.Brand>OmniVisiDraw TURBO &nbsp;</Navbar.Brand>
-                    <Mainmenu/>
-                </Navbar>
-                
-=======
                 <h1>OmniVisiDraw TURBO &nbsp;</h1>
->>>>>>> upstream/master
+                <Mainmenu />
                 <Toolbar/>
             </div>
             <div className={styles.middle}>
