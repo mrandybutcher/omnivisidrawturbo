@@ -3,6 +3,7 @@ import {Pane} from "../chrome/Pane";
 import {useSelector} from "react-redux";
 import {selectSelectionBox, selectSelectionDragBox} from "../selectors";
 import {RootState} from "../../app/rootReducer";
+import {SubPane} from "../chrome/SubPane";
 
 function selectSelectionTransform(state: RootState) {
     if (state.selection.state === "selected") {
@@ -18,8 +19,9 @@ export function SelectionPane() {
     const transform    = useSelector(selectSelectionTransform)
 
     const dragBoxElement = dragBox ?
-        <div>x1: {dragBox.x1}<br/>y1: {dragBox.y1}<br/>x2: {dragBox.x2}<br/>y2: {dragBox.y2}<br/></div> :
-        <div>Not Dragging</div>
+        <SubPane title="Drag Box">x1: {dragBox.x1}<br/>y1: {dragBox.y1}<br/>x2: {dragBox.x2}<br/>y2: {dragBox.y2}
+        </SubPane> :
+        null
 
     const selectionBoxElement = selectionBox ?
         <div>x1: {selectionBox.x1}<br/>y1: {selectionBox.y1}<br/>x2: {selectionBox.x2}<br/>y2: {selectionBox.y2}<br/>
@@ -29,29 +31,28 @@ export function SelectionPane() {
     let transformElement = null;
     if (transform) {
         if (transform.type === "translating") {
-            transformElement = <>
-                <h4>Translating</h4>
-                <div>Start Point:<br/> x: {transform.startPoint.x}<br/>y: {transform.startPoint.y}</div>
-                <div>Current Point:<br/> x: {transform.currentPoint.x}<br/>y: {transform.currentPoint.y}</div>
-            </>
+            transformElement =
+                <SubPane title="Translating">
+                    <div>Start Point:<br/> x: {transform.startPoint.x}<br/>y: {transform.startPoint.y}</div>
+                    <div>Current Point:<br/> x: {transform.currentPoint.x}<br/>y: {transform.currentPoint.y}</div>
+                </SubPane>
 
         } else if (transform.type === "scaling") {
-            transformElement = <>
-                <h4>Scaling</h4>
+            transformElement = <SubPane title="Scaling">
                 <div>Start Point:<br/> x: {transform.startPoint.x}<br/>y: {transform.startPoint.y}</div>
                 <div>Current Point:<br/> x: {transform.currentPoint.x}<br/>y: {transform.currentPoint.y}</div>
                 <div>Direction : {transform.direction}</div>
-            </>
+            </SubPane>
 
         }
     }
 
     return (
-        <Pane title="Selection Box">
-            <h4>DragBox</h4>
+        <Pane title="Selection Pane">
             {dragBoxElement}
-            <h4>SelectionBox</h4>
-            {selectionBoxElement}
+            <SubPane title="Selection Box">
+                {selectionBoxElement}
+            </SubPane>
             {transformElement}
         </Pane>
     )
