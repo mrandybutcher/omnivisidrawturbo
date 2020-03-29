@@ -101,7 +101,7 @@
 * [ ] Load theme from reducer
 * [ ] Expandable/Collapsable left/right columns
 * [ ] Resizable width of left/right columns
-* [ ] Expandable/Collapsable panes
+* [x] Expandable/Collapsable panes
 * [ ] Theme Pane
 
 ## Status Bar
