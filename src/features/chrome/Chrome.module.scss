@@ -14,12 +14,13 @@
     background-color: $primary-background-color;
     border-bottom: $primary-border-color 1px solid;
     color: $primary-text-color;
-    padding: 0.4em 0.4em;
+    padding: 0;
 }
-.header > h1 {
+.header h1 {
     display: inline-block;
     margin: 0;
     font-size: 1.2em;
+  padding: 0.2em;
 }
 
 .middle {

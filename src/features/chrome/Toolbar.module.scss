@@ -1,0 +1,14 @@
+@import "src/_base.scss";
+
+.root {
+    background-color: $primary-background-color;
+    border: 1px solid $secondary-title-background-color;
+    padding: 0.2em 0.4em;
+}
+
+.selectedTool {
+    font-weight: bold;
+}
+.root span {
+    padding: 0.2em 0.4em;
+}
