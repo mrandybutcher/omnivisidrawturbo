@@ -1,6 +1,6 @@
 import React from "react";
 import {useSelector} from "react-redux";
-import {selectAllElementsTransformed} from "../selectors";
+import {selectAllElementsTransformed} from "../../app/selectors";
 import Element from "./Element";
 
 export default function Elements() {

@@ -4,6 +4,7 @@
 * In redux dev tools settings -> Filter Actions in DevTools -> Hide the following "ui/mouseMove"
 * Run "yarn start"
 * Send pull requests or raise tickets for bugs/features
+* Ask before introducing more dependencies
 
 # Tech Debt
 * [x] Refactor the Selection/Pen tool stuff out Canvas

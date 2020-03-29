@@ -6,19 +6,19 @@ import {
     selectSelectionDragBoxState,
     selectSelectionState,
     selectUiState
-} from "../app/rootReducer";
+} from "./rootReducer";
 import {Box} from "../lib/geometry/box";
 import {
     getSelectedElementIds,
     getSelectedElementIdSet,
     getSelectionDelta,
     getSelectionTargetBox
-} from "./selection/getters";
-import {getAllElementIds, getAllElements, getElementById, getElementsByIds} from "./elements/getters";
-import {getDragBox} from "./selectionDragBox/getters";
-import {getCanvasSize} from "./canvas/getters";
+} from "../features/selection/getters";
+import {getAllElementIds, getAllElements, getElementById, getElementsByIds} from "../features/elements/getters";
+import {getDragBox} from "../features/selectionDragBox/getters";
+import {getCanvasSize} from "../features/canvas/getters";
 import {createSelector} from "@reduxjs/toolkit";
-import {getMousePosition, getTool, getZoom} from "./ui/getters";
+import {getMousePosition, getTool, getZoom} from "../features/ui/getters";
 
 export function selectAllElementsTransformed(state: RootState): (AnyElement)[] {
     // @TODO probably a more efficient way to do this

@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from "react";
 import {Point, pointZoom} from "../lib/geometry/point";
 import {useDispatch, useSelector} from "react-redux";
-import {selectTool, selectZoom} from "../features/selectors";
+import {selectTool, selectZoom} from "../app/selectors";
 import {
     selectionDragBoxDrag,
     selectionDragBoxDragEnd,

@@ -1,7 +1,7 @@
 import React from "react"
 import {Pane} from "../chrome/Pane";
 import {useSelector} from "react-redux";
-import {selectSelectedElementsTransformed} from "../selectors";
+import {selectSelectedElementsTransformed} from "../../app/selectors";
 import {AnyElement} from "../../lib/elements";
 import {SubPane} from "../chrome/SubPane";
 

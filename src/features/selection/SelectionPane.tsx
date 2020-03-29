@@ -1,7 +1,7 @@
 import React from "react"
 import {Pane} from "../chrome/Pane";
 import {useSelector} from "react-redux";
-import {selectSelectionBox, selectSelectionDragBox} from "../selectors";
+import {selectSelectionBox, selectSelectionDragBox} from "../../app/selectors";
 import {RootState} from "../../app/rootReducer";
 import {SubPane} from "../chrome/SubPane";
 

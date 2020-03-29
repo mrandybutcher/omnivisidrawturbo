@@ -1,6 +1,6 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-import {selectCanvasSize, selectZoom} from "../selectors";
+import {selectCanvasSize, selectZoom} from "../../app/selectors";
 import useTool from "../../hooks/useTool";
 
 

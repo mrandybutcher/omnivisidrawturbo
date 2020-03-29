@@ -1,7 +1,7 @@
 import React from "react"
 import {rectFromBox} from "../../lib/geometry/rect";
 import {useSelector} from "react-redux";
-import {selectSelectionDragBox} from "../selectors";
+import {selectSelectionDragBox} from "../../app/selectors";
 
 export default function SelectionDragBox() {
     const selectionDragBox = useSelector(selectSelectionDragBox);
