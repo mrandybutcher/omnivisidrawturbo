@@ -1,0 +1,9 @@
+@import "src/_base.scss";
+
+.root {
+    font-size: small;
+}
+.root > span {
+    border-right: $primary-border-color 1px solid;
+    padding-right: 0.5em;
+}

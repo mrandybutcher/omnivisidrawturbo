@@ -1,0 +1,12 @@
+@import "src/_base.scss";
+.root {
+    background-color: $secondary-background-color;
+    border: 1px solid $selected-border-color;
+    margin-bottom: 0.2em;
+}
+.root > p {
+    margin: 0.5em 0;
+}
+.root > h3 {
+    margin: 0.2em 0 0;
+}

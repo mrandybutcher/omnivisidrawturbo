@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Pane.module.css"
+import styles from "./Pane.module.scss"
 
 interface PaneProps {
     title: string

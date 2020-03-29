@@ -3,7 +3,7 @@ import {Pane} from "../chrome/Pane";
 import {useSelector} from "react-redux";
 import {selectSelectedElementsTransformed} from "../selectors";
 import {AnyElement} from "../../lib/elements";
-import styles from "./ElementPropertiesPane.module.css"
+import styles from "./ElementPropertiesPane.module.scss"
 
 function ElementProperties({element}: { element: AnyElement }) {
     if (!Array.isArray(element.geometry)) {

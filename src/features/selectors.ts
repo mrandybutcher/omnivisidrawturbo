@@ -13,12 +13,12 @@ import {
     getSelectedElementIdSet,
     getSelectionDelta,
     getSelectionTargetBox
-} from "./selection/selectors";
-import {getAllElements, getElementById, getElementsByIds} from "./elements/selectors";
-import {getDragBox} from "./selectionDragBox/selectors";
-import {getCanvasSize} from "./canvas/selectors";
+} from "./selection/getters";
+import {getAllElementIds, getAllElements, getElementById, getElementsByIds} from "./elements/getters";
+import {getDragBox} from "./selectionDragBox/getters";
+import {getCanvasSize} from "./canvas/getters";
 import {createSelector} from "@reduxjs/toolkit";
-import {getMousePosition, getTool, getZoom} from "./ui/selectors";
+import {getMousePosition, getTool, getZoom} from "./ui/getters";
 
 export function selectAllElementsTransformed(state: RootState): (AnyElement)[] {
     // @TODO probably a more efficient way to do this
@@ -53,7 +53,7 @@ export const selectMousePosition = createSelector(selectUiState, getMousePositio
 
 export const selectAllElements = createSelector(selectElementsState, getAllElements)
 
-export const selectAllElementIds = createSelector(selectElementsState, (state) => state.allElementIds)
+export const selectAllElementIds = createSelector(selectElementsState,getAllElementIds)
 
 export function selectElementsByIds(state: RootState, ids: ElementIdArray): AnyElement[] {
     return getElementsByIds(selectElementsState(state), ids)

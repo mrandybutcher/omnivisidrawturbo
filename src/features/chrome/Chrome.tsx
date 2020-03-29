@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Chrome.module.css"
+import styles from "./Chrome.module.scss"
 import StatusBar from "./StatusBar";
 import ElementPropertiesPane from "../elements/ElementPropertiesPane";
 import ElementTypesPane from "../elementTypes/ElementTypesPane";
@@ -15,7 +15,7 @@ export default function Chrome({children}: ChromeProps) {
     return (
         <div className={styles.root}>
             <div className={styles.header}>
-                <b>OmniVisiDraw TURBO &nbsp;</b>
+                <h1>OmniVisiDraw TURBO &nbsp;</h1>
                 <Toolbar/>
             </div>
             <div className={styles.middle}>

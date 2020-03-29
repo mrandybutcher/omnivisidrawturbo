@@ -5,8 +5,8 @@ import {Direction} from "../../lib/direction";
 import {Point} from "../../lib/geometry/point";
 import {Box} from "../../lib/geometry/box";
 import {withPayloadType} from "../../lib/utils";
-import {getSelectedElementIds, getSelectionDelta, getSelectionStartBox, getSelectionTargetBox} from "./selectors";
-import {getBoxForElementIds} from "../elements/selectors";
+import {getSelectedElementIds, getSelectionDelta, getSelectionStartBox, getSelectionTargetBox} from "./getters";
+import {getBoxForElementIds} from "../elements/getters";
 import {scaleElement, translateElement} from "../elements/actions";
 import {batch} from "react-redux";
 

@@ -14,7 +14,7 @@ import {Box} from "../../lib/geometry/box";
 import {Point} from "../../lib/geometry/point";
 import {Direction} from "../../lib/direction";
 import {_selectionDragBoxDragEnd} from "../selectionDragBox/actions";
-import {getSelectionTargetBox} from "./selectors";
+import {getSelectionTargetBox} from "./getters";
 
 
 interface NoSelection {

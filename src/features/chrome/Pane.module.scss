@@ -1,0 +1,16 @@
+@import "src/_base.scss";
+
+.root {
+
+}
+
+.title {
+    background-color: $title-background-color;
+    padding: 0.2em 0.5em;
+    border-bottom: #595959 1px solid;
+}
+
+.content {
+    padding: 0.2em 0.5em ;
+    border-bottom: $primary-border-color 1px solid;
+}

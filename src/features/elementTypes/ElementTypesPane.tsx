@@ -1,6 +1,6 @@
 import React, {useCallback} from "react"
 import {Pane} from "../chrome/Pane";
-import styles from "./ElementTypesPane.module.css"
+import styles from "./ElementTypesPane.module.scss"
 import {useDispatch} from "react-redux";
 import {createElement} from "../elements/actions";
 
