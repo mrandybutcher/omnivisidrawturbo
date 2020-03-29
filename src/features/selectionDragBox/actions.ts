@@ -4,8 +4,8 @@ import {Point} from "../../lib/geometry/point";
 import {ElementIdArray} from "../../lib/elements";
 import {Box} from "../../lib/geometry/box";
 import {withPayloadType} from "../../lib/utils";
-import {getBoxForElementIds, getElementIdsInBox} from "../elements/selectors";
-import {getDragBox} from "./selectors";
+import {getBoxForElementIds, getElementIdsInBox} from "../elements/getters";
+import {getDragBox} from "./getters";
 
 
 export const selectionDragBoxDragStart = createAction("selectionDragBox/dragBoxDragStart", withPayloadType<Point>());

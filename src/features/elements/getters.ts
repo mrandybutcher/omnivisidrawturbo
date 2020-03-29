@@ -18,6 +18,10 @@ export function getElementById(state: ElementsState, id: ElementId): AnyElement 
     return state.elements[id]
 }
 
+export function getAllElementIds(state: ElementsState): ElementIdArray {
+    return state.allElementIds
+}
+
 export function getElementIdsInBox(state: ElementsState, box?: Box): ElementIdArray {
     if (!box) {
         return []

@@ -4,18 +4,21 @@
 * In redux dev tools settings -> Filter Actions in DevTools -> Hide the following "ui/mouseMove"
 * Run "yarn start"
 * Send pull requests or raise tickets for bugs/features
+* Ask before introducing more dependencies
 
 # Tech Debt
+* [x] Refactor the Selection/Pen tool stuff out Canvas
+* [x] Sort out all the floating-point geometry
+* [x] Stop Canvas re-rendering so much (useCallback wrap param passed to useDrag?)
+* [x] Move the colours into a SCSS file
+* [ ] Prevent all elements re-rendering when one is moved
 * [ ] Combine selection scale/transform to single transform that is all box based
 * [ ] Write some Tests
 * [ ] Use reselect for more component selectors to speed things up
 * [ ] Abstract mousedown to detect clicks and ready for touch support
-* [ ] Stop Canvas re-rendering so much (useCallback wrap param passed to useDrag?)
 * [ ] Replace random id generation with proper uuid's
 * [ ] Dig into performance a bit once reselect done
 * [ ] Less OMG UI
-* [x] Refactor the Selection/Pen tool stuff out Canvas
-* [ ] Sort out all the floating-point geometry
 
 # Deployment
 * [ ] Setup CI
@@ -98,7 +101,7 @@
 * [ ] Load theme from reducer
 * [ ] Expandable/Collapsable left/right columns
 * [ ] Resizable width of left/right columns
-* [ ] Expandable/Collapsable panes
+* [x] Expandable/Collapsable panes
 * [ ] Theme Pane
 
 ## Status Bar

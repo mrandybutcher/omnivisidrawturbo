@@ -67,8 +67,8 @@ export function pointScale(point: Point, origin: Box, target: Box): Point {
     // console.log("newNormPoint", newNormPoint)
 
     const newPoint = {
-        x: target.x1 + newNormPoint.x,
-        y: target.y1 + newNormPoint.y
+        x: Math.round(target.x1 + newNormPoint.x),
+        y: Math.round(target.y1 + newNormPoint.y)
     }
     // console.log("newPoint", newPoint)
     return newPoint

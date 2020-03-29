@@ -1,10 +1,10 @@
 import React, {useCallback} from "react"
 import {Pane} from "../chrome/Pane";
 import {useDispatch, useSelector} from "react-redux";
-import styles from "./ElementListPane.module.css"
+import styles from "./ElementListPane.module.scss"
 import {ElementId} from "../../lib/elements";
 import {selectionAddItem, selectionSetItem} from "../selection/actions";
-import {selectAllElements, selectSelectedElementIdSet} from "../selectors";
+import {selectAllElements, selectSelectedElementIdSet} from "../../app/selectors";
 import {createSelector} from "@reduxjs/toolkit";
 
 

@@ -1,7 +1,0 @@
-.root {
-    font-size: small;
-}
-.root > span {
-    border-right: #313335 1px solid;
-    padding-right: 0.5em;
-}

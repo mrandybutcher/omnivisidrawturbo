@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from "react";
 import {Point, pointZoom} from "../lib/geometry/point";
 import {useDispatch, useSelector} from "react-redux";
-import {selectTool, selectZoom} from "../features/selectors";
+import {selectTool, selectZoom} from "../app/selectors";
 import {
     selectionDragBoxDrag,
     selectionDragBoxDragEnd,
@@ -36,12 +36,12 @@ function createElementMouseClick(id: ElementId) {
 type MyMouseEvent = MouseEvent | React.MouseEvent<Element, MouseEvent>
 
 interface ToolHandler {
-    onCanvasMouseDown?: (e: MyMouseEvent) => void
-    onCanvasClick?: (e: MyMouseEvent) => void
-    onCanvasMouseMove?: (e: MyMouseEvent) => void
-    onCanvasMouseLeave?: (e: MyMouseEvent) => void
-    onElementMouseDown?: (e: MyMouseEvent) => void
-    createElementMouseClick: (id: ElementId) => (e: MyMouseEvent) => void
+    readonly onCanvasMouseDown?: (e: MyMouseEvent) => void
+    readonly onCanvasClick?: (e: MyMouseEvent) => void
+    readonly onCanvasMouseMove?: (e: MyMouseEvent) => void
+    readonly onCanvasMouseLeave?: (e: MyMouseEvent) => void
+    readonly onElementMouseDown?: (e: MyMouseEvent) => void
+    readonly createElementMouseClick: (id: ElementId) => (e: MyMouseEvent) => void
 }
 
 function useSelectionTool(): ToolHandler {

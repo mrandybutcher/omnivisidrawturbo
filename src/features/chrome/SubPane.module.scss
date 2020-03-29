@@ -1,0 +1,16 @@
+@import "src/_base.scss";
+
+.root {
+  border: 1px solid $secondary-border-color;
+  margin-bottom: 0.2em;
+
+}
+
+.title {
+  background-color: $secondary-title-background-color;
+  padding: 0.2em 0.5em;
+}
+
+.content {
+  padding: 0.2em 0.5em;
+}

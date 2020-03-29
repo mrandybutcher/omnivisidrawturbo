@@ -1,46 +1,35 @@
 import React from "react"
 import {Pane} from "../chrome/Pane";
 import {useSelector} from "react-redux";
-import {selectSelectedElementsTransformed} from "../selectors";
+import {selectSelectedElementsTransformed} from "../../app/selectors";
 import {AnyElement} from "../../lib/elements";
-import styles from "./ElementPropertiesPane.module.css"
+import {SubPane} from "../chrome/SubPane";
 
-function ElementProperties({element}: { element: AnyElement }) {
-    if (!Array.isArray(element.geometry)) {
-        return (
-            <div className={styles.root}>
-                <h3>{element.type}</h3>
-                <p>Geometry:</p>
-                <table>
-                    <tbody>
-                    {Object.entries(element.geometry).map(([key, value]) => {
-                        return <tr key={key}>
-                            <td>{key}</td>
-                            <td>{value}</td>
-                        </tr>
-                    })}
-                    </tbody>
-                </table>
-            </div>);
+function ElementGeometryProperties({element}: { element: AnyElement }) {
+    return (
+        <SubPane title={element.type + " Geometry"}>
+            <table>
+                <tbody>
+                {
+                    Array.isArray(element.geometry)
+                        ? element.geometry.map((point, idx) => {
+                            return <tr key={idx}>
+                                <td>x: {point.x}</td>
+                                <td>y: {point.y}</td>
+                            </tr>
+                        })
+                        : Object.entries(element.geometry).map(([key, value]) => {
+                            return <tr key={key}>
+                                <td>{key}</td>
+                                <td>{value}</td>
+                            </tr>
+                        })
+                }
+                </tbody>
+            </table>
+        </SubPane>
+    );
 
-    } else {
-        return (
-            <div className={styles.root}>
-                <h3>{element.type}</h3>
-                <p>Geometry:</p>
-                <table>
-                    <tbody>
-                    {element.geometry.map((point, idx) => {
-                        return <tr key={idx}>
-                            <td>x: {point.x}</td>
-                            <td>y: {point.y}</td>
-                        </tr>
-                    })}
-                    </tbody>
-                </table>
-            </div>);
-
-    }
 }
 
 
@@ -48,7 +37,7 @@ export default function ElementPropertiesPane() {
     const selectedElements = useSelector(selectSelectedElementsTransformed)
     return (
         <Pane title="Element Properties">
-            {selectedElements.map((element, idx) => <ElementProperties key={idx} element={element}/>)}
+            {selectedElements.map((element, idx) => <ElementGeometryProperties key={idx} element={element}/>)}
         </Pane>
     )
 }
