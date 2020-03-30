@@ -5,12 +5,10 @@
     margin: 0;
     border: 0;
     display: flex;
-    /*outline: green;*/
     flex-direction: column;
 }
 
 .header {
-    /*outline: solid blue;*/
     background-color: $primary-background-color;
     border-bottom: $primary-border-color 1px solid;
     color: $primary-text-color;
@@ -26,13 +24,11 @@
 .middle {
     display: flex;
     flex-direction: row;
-    /*outline: solid yellow;*/
     flex-grow: 1;
     overflow: hidden;
 }
 
 .footer {
-    /*outline: solid purple;*/
     background-color: $primary-background-color;
     border-top: $primary-border-color 1px solid;
     color: $primary-text-color;
@@ -40,7 +36,6 @@
 }
 
 .left {
-    /*outline: solid brown;*/
     background-color: $primary-background-color;
     border-right: $primary-border-color 1px solid;
     color: $primary-text-color;
@@ -49,7 +44,6 @@
 }
 
 .right {
-    /*outline: solid purple;*/
     background-color: $primary-background-color;
     border-left: $primary-border-color 1px solid;
     color: $primary-text-color;
@@ -58,7 +52,6 @@
     overflow-y: scroll;
 }
 .main {
-    /*outline: solid red;*/
     flex-grow: 1;
     overflow: scroll;
 }
