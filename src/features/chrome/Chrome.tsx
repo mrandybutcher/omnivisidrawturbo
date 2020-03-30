@@ -7,6 +7,7 @@ import ElementListPane from "../elements/ElementListPane";
 import {SelectionPane} from "../selection/SelectionPane";
 import Toolbar from "./Toolbar";
 import Menu from './Menu';
+import PresencePane from "../presence/PresencePane";
 
 interface ChromeProps {
     children: React.ReactNode;
@@ -24,6 +25,7 @@ export default function Chrome({children}: ChromeProps) {
                 <div className={styles.left}>
                     <ElementTypesPane/>
                     <ElementListPane/>
+                    <PresencePane/>
                 </div>
                 <div className={styles.main}>
                     {children}

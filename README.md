@@ -177,6 +177,12 @@
 * [ ] Copy and paste between layers
 * [ ] Lock layers for editing/selection
 
+## Presence Pane
+* [x] Pane to allow user to set their name
+* [ ] Persist users name locally
+* [ ] See list of other peoples using the app
+
+
 ## Collaboration
 * [ ] Propagate mouse position
 * [ ] Propagate element changes

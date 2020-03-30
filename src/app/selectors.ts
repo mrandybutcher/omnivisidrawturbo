@@ -2,7 +2,7 @@ import {AnyElement, ElementId, ElementIdArray, elementScale, elementTranslate} f
 import {
     RootState,
     selectCanvasState,
-    selectElementsState,
+    selectElementsState, selectPresenceState,
     selectSelectionDragBoxState,
     selectSelectionState,
     selectUiState
@@ -19,6 +19,7 @@ import {getDragBox} from "../features/selectionDragBox/getters";
 import {getCanvasSize} from "../features/canvas/getters";
 import {createSelector} from "@reduxjs/toolkit";
 import {getMousePosition, getTool, getZoom} from "../features/ui/getters";
+import {getName} from "../features/presence/presenceReducer";
 
 export function selectAllElementsTransformed(state: RootState): (AnyElement)[] {
     // @TODO probably a more efficient way to do this
@@ -88,3 +89,5 @@ export const selectSelectedElementsTransformed = createSelector(
     [selectSelectedElementIdSet, selectAllElementsTransformed],
     (selectedElementIdSet, allElements) => allElements.filter(it => selectedElementIdSet.has(it.id))
 )
+
+export const selectUserName = createSelector(selectPresenceState, getName)
