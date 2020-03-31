@@ -2,7 +2,8 @@ import {AnyElement, ElementId, ElementIdArray, elementScale, elementTranslate} f
 import {
     RootState,
     selectCanvasState,
-    selectElementsState, selectPresenceState,
+    selectElementsState,
+    selectPresenceState,
     selectSelectionDragBoxState,
     selectSelectionState,
     selectUiState
@@ -19,7 +20,7 @@ import {getDragBox} from "../features/selectionDragBox/getters";
 import {getCanvasSize} from "../features/canvas/getters";
 import {createSelector} from "@reduxjs/toolkit";
 import {getMousePosition, getTool, getZoom} from "../features/ui/getters";
-import {getName} from "../features/presence/presenceReducer";
+import {getConnected, getName, getUserId, getUsers} from "../features/presence/presenceReducer";
 
 export function selectAllElementsTransformed(state: RootState): (AnyElement)[] {
     // @TODO probably a more efficient way to do this
@@ -54,7 +55,7 @@ export const selectMousePosition = createSelector(selectUiState, getMousePositio
 
 export const selectAllElements = createSelector(selectElementsState, getAllElements)
 
-export const selectAllElementIds = createSelector(selectElementsState,getAllElementIds)
+export const selectAllElementIds = createSelector(selectElementsState, getAllElementIds)
 
 export function selectElementsByIds(state: RootState, ids: ElementIdArray): AnyElement[] {
     return getElementsByIds(selectElementsState(state), ids)
@@ -90,4 +91,7 @@ export const selectSelectedElementsTransformed = createSelector(
     (selectedElementIdSet, allElements) => allElements.filter(it => selectedElementIdSet.has(it.id))
 )
 
-export const selectUserName = createSelector(selectPresenceState, getName)
+export const selectUserName  = createSelector(selectPresenceState, getName)
+export const selectConnected = createSelector(selectPresenceState, getConnected)
+export const selectUsers     = createSelector(selectPresenceState, getUsers)
+export const selectUserId     = createSelector(selectPresenceState, getUserId)
