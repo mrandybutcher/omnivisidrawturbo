@@ -137,8 +137,8 @@
 ## Elements Pane
 * [x] A Pane with the list of the elements in the diagram in render order
 * [x] Highlight currently selected elements
-* [ ] Clicking the elements in the pane selects them
-* [ ] Shift clicking elements adds them to the selection
+* [x] Clicking the elements in the pane selects them
+* [x] Shift clicking elements adds them to the selection
 * [ ] The element in the list reflects its formatting
 * [ ] Drag elements to re-order them
 
@@ -216,4 +216,3 @@
 ## Gantt Charts
 ## Tickets / Issues
 ## Kanban style boards
-
