@@ -3,7 +3,7 @@ import {AnyElement} from "../../lib/elements";
 import {pointsToSvgPoints} from "../../lib/geometry/points";
 import useTool from "../../hooks/useTool";
 
-export default function Element({element}: { element: AnyElement }) {
+ let Element = function Element({element}: { element: AnyElement }) {    
     const tool = useTool();
 
     const onClick     = tool.createElementMouseClick(element.id)
@@ -36,3 +36,5 @@ export default function Element({element}: { element: AnyElement }) {
             )
     }
 }
+
+export default React.memo(Element);

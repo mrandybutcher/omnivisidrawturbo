@@ -12,7 +12,7 @@
 * [x] Sort out all the floating-point geometry
 * [x] Stop Canvas re-rendering so much (useCallback wrap param passed to useDrag?)
 * [x] Move the colours into a SCSS file
-* [ ] Prevent all elements re-rendering when one is moved
+* [x] Prevent all elements re-rendering when one is moved
 * [ ] Combine selection scale/transform to single transform that is all box based
 * [ ] Write some Tests
 * [ ] Use reselect for more component selectors to speed things up
