@@ -2,9 +2,15 @@
 * Install [React Dev Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
 * Install [Redux Dev Tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
 * In redux dev tools settings -> Filter Actions in DevTools -> Hide the following "ui/mouseMove"
+## Client
 * cd client
 * Run "yarn install"
 * Run "yarn start"
+## Server (only necessary for collab)
+* cd server
+* Run "yarn install"
+* Run "yarn start"
+## Then Help:
 * Send pull requests or raise tickets for bugs/features
 * Ask before introducing more dependencies
 
@@ -181,7 +187,9 @@
 ## Presence Pane
 * [x] Pane to allow user to set their name
 * [ ] Persist users name locally
-* [ ] See list of other peoples using the app
+* [x] See list of other peoples using the app
+* [ ] Click user to establish webrtc connection with them
+* [ ] Show users each others mouse position on canvas
 
 
 ## Collaboration
