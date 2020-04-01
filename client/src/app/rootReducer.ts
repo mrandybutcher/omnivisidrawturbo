@@ -3,7 +3,7 @@ import elementsReducer from "../features/elements/elementsReducer";
 import selectionDragBoxReducer from "../features/selectionDragBox/selectionDragBoxReducer";
 import canvasReducer from "../features/canvas/canvasReducer";
 import uiReducer from "../features/ui/uiReducer"
-import presenceReducer from "../features/presence/presenceReducer"
+import webRtcReducer from "../features/webrtc/webRtcReducer"
 import {combineReducers} from "redux";
 
 const rootReducer = combineReducers({
@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
     selection: selectionReducer,
     selectionDragBox: selectionDragBoxReducer,
     ui: uiReducer,
-    presence: presenceReducer
+    presence: webRtcReducer
 });
 
 export default rootReducer

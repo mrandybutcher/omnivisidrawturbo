@@ -20,7 +20,7 @@ import {getDragBox} from "../features/selectionDragBox/getters";
 import {getCanvasSize} from "../features/canvas/getters";
 import {createSelector} from "@reduxjs/toolkit";
 import {getMousePosition, getTool, getZoom} from "../features/ui/getters";
-import {getConnected, getName, getUserId, getUsers} from "../features/presence/presenceReducer";
+import {getConnected, getName, getUserId, getUsers} from "../features/webrtc/webRtcReducer";
 
 export function selectAllElementsTransformed(state: RootState): (AnyElement)[] {
     // @TODO probably a more efficient way to do this

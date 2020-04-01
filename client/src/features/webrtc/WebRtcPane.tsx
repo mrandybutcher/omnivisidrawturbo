@@ -1,11 +1,12 @@
 import React, {useState} from "react"
 import {Pane} from "../chrome/Pane";
 import {useDispatch, useSelector} from "react-redux";
-import {selectConnected, selectUserName, selectUsers} from "../../app/selectors";
-import {offerUser, updateName} from "./actions";
+import {selectConnected, selectUserId, selectUserName, selectUsers} from "../../app/selectors";
+import {connectToUser, offerUser, updateName} from "./actions";
 
-export default function PresencePane() {
+export default function WebRtcPane() {
     const userName              = useSelector(selectUserName)
+    const userId                = useSelector(selectUserId)
     const connected             = useSelector(selectConnected)
     const users                 = useSelector(selectUsers)
     const [newName, setNewName] = useState<string | undefined>(undefined)
@@ -27,7 +28,7 @@ export default function PresencePane() {
     }
 
     return (
-        <Pane title="Presence Pane">
+        <Pane title="WebRTC Pane">
             <label>
                 Your Name:
                 <input value={newName || userName} onChange={onChange}/>
@@ -36,10 +37,13 @@ export default function PresencePane() {
             {newName && <button onClick={onCrossClick}>&#10007;</button>}
             {connected ? <b>Connected</b> : <b>Not connected</b>}
             <ul style={{paddingLeft: "1em"}}>
-                {Array.isArray(users)  && users.map((user, idx) => {
+                {Array.isArray(users) && users.map((user, idx) => {
+                    if(user.id == userId) {
+                        return null;
+                    }
                     return <li key={idx}>{user.userName}
                         <button onClick={() => {
-                            dispatch(offerUser(user.id))
+                            dispatch(connectToUser({recipientId: user.id}))
                         }}>Offer
                         </button>
                     </li>

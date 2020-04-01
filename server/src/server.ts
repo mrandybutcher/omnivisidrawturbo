@@ -24,8 +24,13 @@ interface MakeAnswer {
     readonly recipientId: string
     readonly answer: string
 }
+interface MakeCandiate {
+    readonly type: "makecandidate"
+    readonly recipientId: string
+    readonly candidate: string
+}
 
-type RequestMessage = LoginRequest | UpdateUserName | MakeOffer | MakeAnswer
+type RequestMessage = LoginRequest | UpdateUserName | MakeOffer | MakeAnswer | MakeCandiate
 
 interface LoginErrorResponse {
     readonly type: "loginerror"
@@ -52,9 +57,15 @@ interface AnswerMessage {
     readonly fromId: string,
     readonly fromName: string
 }
+interface CandidateMessage {
+    readonly type: "candidate"
+    readonly fromId: string,
+    readonly recipientId: string
+    readonly candidate: string
+}
 
 
-type ResponseMessage = LoginErrorResponse | UpdateUsersMessage | ConnectedMessage | OfferMessage | AnswerMessage
+type ResponseMessage = LoginErrorResponse | UpdateUsersMessage | ConnectedMessage | OfferMessage | AnswerMessage | CandidateMessage
 
 interface UserInfo {
     userName?: string,
@@ -182,6 +193,21 @@ function handleRequest(request: RequestMessage, ws: WebSocket & UserInfo, wss: W
                 });
             }
             break;
+        }
+        case "makecandidate": {
+            const {recipientId , candidate} = request;
+            const user = users
+            const recipSocket = users[recipientId]
+            if(recipSocket) {
+                sendTo(recipSocket, {
+                    type: "candidate",
+                    candidate,
+                    fromId: ws.id || "",
+                    recipientId
+                });
+            }
+            break;
+
         }
 
         default:

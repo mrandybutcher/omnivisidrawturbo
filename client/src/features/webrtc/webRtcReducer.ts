@@ -1,6 +1,6 @@
 import {createReducer} from "@reduxjs/toolkit";
-import {updateConnected, updateName, updateUsers} from "./actions";
 import {v4} from "uuid"
+import {updateName, usersUpdated, webSocketConnectionStatus} from "./actions";
 
 const adjectives = [
     "Big", "Little", "Super", "Random", "Uber", "Sketchy", "Cheeky"
@@ -13,6 +13,7 @@ const nouns = [
 export interface User {
     id: string,
     userName: string,
+    connected: boolean
 }
 
 interface PresenceState {
@@ -35,20 +36,20 @@ const initialPresenceState: PresenceState = {
     users: []
 }
 
-const presenceReducer = createReducer(initialPresenceState as PresenceState, builder =>
+const webRtcReducer = createReducer(initialPresenceState as PresenceState, builder =>
     builder
         .addCase(updateName, (state, action) => {
             state.name = action.payload
         })
-        .addCase(updateConnected, (state, action) => {
+        .addCase(webSocketConnectionStatus, (state, action) => {
             state.connected = action.payload
         })
-        .addCase(updateUsers, (state, action) => {
+        .addCase(usersUpdated, (state, action) => {
             state.users = action.payload
         })
 );
 
-export default presenceReducer
+export default webRtcReducer
 
 export function getName(state: PresenceState) {
     return state.name
