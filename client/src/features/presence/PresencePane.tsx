@@ -2,7 +2,7 @@ import React, {useState} from "react"
 import {Pane} from "../chrome/Pane";
 import {useDispatch, useSelector} from "react-redux";
 import {selectConnected, selectUserName, selectUsers} from "../../app/selectors";
-import {updateName} from "./actions";
+import {offerUser, updateName} from "./actions";
 
 export default function PresencePane() {
     const userName              = useSelector(selectUserName)
@@ -26,19 +26,26 @@ export default function PresencePane() {
         setNewName(undefined)
     }
 
-    return <Pane title="Presence Pane">
-        <label>
-            Your Name:
-            <input value={newName || userName} onChange={onChange}/>
-        </label>
-        {newName && <button onClick={onTickClick}>&#10003;</button>}
-        {newName && <button onClick={onCrossClick}>&#10007;</button>}
-        {connected ? <b>Connected</b> : <b>Not connected</b>}
-        <ul>
-            {users.map((it, idx) => {
-                return <li key={idx}>{it.userName}</li>
-            })}
-        </ul>
-    </Pane>
+    return (
+        <Pane title="Presence Pane">
+            <label>
+                Your Name:
+                <input value={newName || userName} onChange={onChange}/>
+            </label>
+            {newName && <button onClick={onTickClick}>&#10003;</button>}
+            {newName && <button onClick={onCrossClick}>&#10007;</button>}
+            {connected ? <b>Connected</b> : <b>Not connected</b>}
+            <ul style={{paddingLeft: "1em"}}>
+                {Array.isArray(users)  && users.map((user, idx) => {
+                    return <li key={idx}>{user.userName}
+                        <button onClick={() => {
+                            dispatch(offerUser(user.id))
+                        }}>Offer
+                        </button>
+                    </li>
+                })}
+            </ul>
+        </Pane>
+    );
 
 }
