@@ -1,3 +1,5 @@
+# See the ALPHA version
+* https://r3b.dev/
 # Getting Started Developing
 * Install [React Dev Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
 * Install [Redux Dev Tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
@@ -10,8 +12,9 @@
 * cd server
 * Run "yarn install"
 * Run "yarn start"
-## Then Help:
+## Help
 * Send pull requests or raise tickets for bugs/features
+* Ideally pick stuff off the list below
 * Ask before introducing more dependencies
 
 # Tech Debt

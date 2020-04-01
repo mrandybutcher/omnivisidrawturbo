@@ -14,7 +14,18 @@ interface UpdateUserName {
     readonly userName: string
 }
 
-type RequestMessage = LoginRequest | UpdateUserName
+interface MakeOffer {
+    readonly type: "makeoffer"
+    readonly recipientId: string
+    readonly offer: string
+}
+interface MakeAnswer {
+    readonly type: "makeanswer"
+    readonly recipientId: string
+    readonly answer: string
+}
+
+type RequestMessage = LoginRequest | UpdateUserName | MakeOffer | MakeAnswer
 
 interface LoginErrorResponse {
     readonly type: "loginerror"
@@ -29,9 +40,21 @@ interface UpdateUsersMessage {
 interface ConnectedMessage {
     readonly type: "connected"
 }
+interface OfferMessage {
+    readonly type: "offer",
+    readonly offer: string,
+    readonly fromId: string,
+    readonly fromName: string
+}
+interface AnswerMessage {
+    readonly type: "answer",
+    readonly answer: string,
+    readonly fromId: string,
+    readonly fromName: string
+}
 
 
-type ResponseMessage = LoginErrorResponse | UpdateUsersMessage | ConnectedMessage
+type ResponseMessage = LoginErrorResponse | UpdateUsersMessage | ConnectedMessage | OfferMessage | AnswerMessage
 
 interface UserInfo {
     userName?: string,
@@ -79,17 +102,28 @@ function parseRequest(data: Data): RequestMessage | undefined {
         try {
             return JSON.parse(data) as RequestMessage;
         } catch (e) {
-            console.log("Invalid JSON");
+            console.log("Invalid JSON", e);
             return undefined
         }
     } else {
         console.warn("data type is not string", data)
     }
 }
+function updateUsers(wss: WebSocket.Server) {
+    const loggedInUsers = Object.values(
+        users
+    ).map(({id, userName}) => ({id, userName}));
 
-function handleRequest(request: RequestMessage, ws: WebSocket, wss: WebSocket.Server) {
+    sendToAll(wss,{
+        type: "updateusers",
+        users: loggedInUsers
+    })
+}
+
+function handleRequest(request: RequestMessage, ws: WebSocket & UserInfo, wss: WebSocket.Server) {
+    console.log("request type \"" + request.type + "\"")
     switch (request.type) {
-        case "login":
+        case "login": {
             if (users[request.id]) {
                 // userName already exists
                 sendTo(ws, {
@@ -101,36 +135,54 @@ function handleRequest(request: RequestMessage, ws: WebSocket, wss: WebSocket.Se
                 users[request.id]          = ws;
                 users[request.id].userName = request.userName;
                 users[request.id].id       = request.id;
+                updateUsers(wss)
 
-                const loggedInUsers = Object.values(
-                    users
-                ).map(({id, userName}) => ({id, userName}));
-
-                sendToAll(wss,{
-                    type: "updateusers",
-                    users: loggedInUsers
-                })
             }
             break;
-        case "updateusername":
+        }
+        case "updateusername":{
             if (users[request.id]) {
                 users[request.id].userName = request.userName;
+                updateUsers(wss)
 
-                const loggedInUsers = Object.values(
-                    users
-                ).map(({id, userName}) => ({id, userName}));
-
-                sendToAll(wss, {
-                    type: "updateusers",
-                    users: loggedInUsers
-                });
             } else {
                 sendTo(ws, {
                     type: "loginerror",
                     message: "ID not found"
                 })
-
             }
+            break;
+        }
+        case "makeoffer": {
+            const {recipientId , offer} = request;
+            const user = users
+            const recipSocket = users[recipientId]
+            if(recipSocket) {
+                sendTo(recipSocket, {
+                    type: "offer",
+                    offer,
+                    fromId: ws.id || "",
+                    fromName: ws.userName || ""
+
+                });
+            }
+            break;
+
+        }
+        case "makeanswer": {
+            const {recipientId , answer} = request;
+            const user = users
+            const recipSocket = users[recipientId]
+            if(recipSocket) {
+                sendTo(recipSocket, {
+                    type: "answer",
+                    answer,
+                    fromId: ws.id || "",
+                    fromName: ws.userName || ""
+                });
+            }
+            break;
+        }
 
         default:
             console.log("Unknown request", request)
@@ -148,6 +200,7 @@ wss.on("connection", function connection(ws: WebSocket, req) {
 
     ws.on("message", function message(data) {
         console.log("Message received: ", data)
+        console.log(data)
 
         const request = parseRequest(data)
         if (request) {
