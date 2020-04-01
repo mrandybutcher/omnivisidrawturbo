@@ -27,7 +27,7 @@
 * [ ] Write some Tests
 * [ ] Use reselect for more component selectors to speed things up
 * [ ] Abstract mousedown to detect clicks and ready for touch support
-* [ ] Replace random id generation with proper uuid's
+* [x] Replace random id generation with proper uuid's
 * [ ] Dig into performance a bit once reselect done
 * [ ] Less OMG UI
 
