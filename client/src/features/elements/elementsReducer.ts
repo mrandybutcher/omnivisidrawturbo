@@ -1,6 +1,6 @@
 import {createReducer} from "@reduxjs/toolkit";
 import {AnyElement, ElementIdArray, elementScale, elementTranslate} from "../../lib/elements";
-import {addPointToPolyLine, createElement, scaleElement, translateElement} from "./actions";
+import {addPointToPolyLine, createElement, scaleElement, translateElement, updateElementGeometry} from "./actions";
 import {pointEquals} from "../../lib/geometry/point";
 
 export interface ElementsState {
@@ -48,7 +48,7 @@ const initialElementsState: ElementsState = {
             formatting: {stroke: "black"},
         },
     },
-    allElementIds: ["a", "b", "c", "d", "e", "f"] as ElementIdArray,
+    allElementIds: ["a", "b", "c", "d", "e", "f"] as ElementIdArray
 }
 
 
@@ -89,9 +89,12 @@ const elementsReducer = createReducer(initialElementsState as ElementsState, bui
                 }
             }
 
+        })        
+        .addCase(updateElementGeometry, (state, action) => {
+            let element = state.elements[action.payload.id];
+            // @ts-ignore
+            element.geometry[action.payload.property] = action.payload.value;
         })
 );
 
 export default elementsReducer;
-
-

@@ -115,4 +115,3 @@ export function elementScale(element: AnyElement, startBox?: Box, endBox?: Box):
 export function elementsBoundingBox(elements: AnyElement[]): Box {
     return boxBoundingBox(elements.map(elementBoundingBox));
 }
-
