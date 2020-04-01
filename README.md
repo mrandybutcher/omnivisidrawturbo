@@ -134,7 +134,7 @@
 * [x] Show geometry of selected elements
 * [ ] Show formatting of selected elements
 * [x] Show data of selected elements
-* [ ] Edit element geometry from a tool window
+* [x] Edit element geometry from a tool window
 * [ ] Edit element formatting from a tool window
 * [ ] Edit element data from a tool window
 * [ ] Handle editing properties of multiple selected elements
