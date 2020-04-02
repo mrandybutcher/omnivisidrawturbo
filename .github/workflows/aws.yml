@@ -79,3 +79,4 @@ jobs:
         service: fargate-service
         cluster: default
         wait-for-service-stability: true
+        wait-for-minutes: 1
