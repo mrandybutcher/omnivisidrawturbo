@@ -40,7 +40,7 @@ function ElementGeometryProperties({element}: { element: AnyElement }) {
                         : Object.entries(element.geometry).map(([key, value]) => {
                             return <tr key={key}>
                                 <td>{key}</td>
-                                <EditableGeometryProperty element={element} property={key} value={value} />
+                                <td><EditableGeometryProperty element={element} property={key} value={value} /></td>
                             </tr>
                         })
                 }
