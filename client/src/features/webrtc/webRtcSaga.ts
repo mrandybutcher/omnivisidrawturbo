@@ -9,7 +9,9 @@ import {
     offerUser,
     sendAnswer,
     sendCandidate,
-    sendOffer, userConnectionStatus
+    sendOffer,
+    updateGhostMouse,
+    userConnectionStatus
 } from "./actions";
 import {canvasMouseMove} from "../ui/actions";
 
@@ -51,6 +53,7 @@ function createPeerConnectionStatusChannel(connection: RTCPeerConnection) {
         }
     });
 }
+
 function* watchPeerConnectionStatus(connection: RTCPeerConnection, fromId: string, recipientId: string) {
     const channel = createPeerConnectionStatusChannel(connection)
     while (true) {
@@ -61,34 +64,17 @@ function* watchPeerConnectionStatus(connection: RTCPeerConnection, fromId: strin
     }
 }
 
-function createRTCPeerConnectionChannel(connection: RTCPeerConnection) {
-    return eventChannel(emit => {
-
-        // connection.onconnectionstatechange = function (event) {
-        //     console.log("connection state change", this.connectionState)
-        // }
-
+function getReceivingDataChannel(connection: RTCPeerConnection) {
+    return new Promise((resolve, reject) => {
         connection.ondatachannel = function (event) {
-            console.log("ondatachannel created", event)
-            const receiveChannel     = event.channel
-            receiveChannel.onopen    = function () {
-                console.log("receive channel open")
-            }
-            receiveChannel.onmessage = function (event) {
-                console.log("Message Recieved", event)
-                // emit(event.data)
-            }
-            receiveChannel.onclose   = function (event) {
-                console.log("Receive channel closed", event)
-            }
-        }
-
-        return () => {
-            console.log("Unsubscribing from peer channel")
-            connection.close()
+            console.log("receiving datachannel created", event)
+            const receiveChannel = event.channel
+            resolve(receiveChannel)
         }
     })
 }
+
+
 
 // creates a data channel
 function createDataChannel(connection: RTCPeerConnection): RTCDataChannel {
@@ -99,17 +85,17 @@ function createDataChannel(connection: RTCPeerConnection): RTCDataChannel {
 // creates a channel which emits messages from the data channel
 function createDataChannelMessageChannel(dataChannel: RTCDataChannel) {
     return eventChannel(emit => {
-        dataChannel.onopen       = function (err) {
+        dataChannel.onopen    = function (err) {
             console.log("data channel OPEN")
         }
-        dataChannel.onerror      = function (err) {
+        dataChannel.onerror   = function (err) {
             console.log("data channel error", err)
         }
-        dataChannel.onmessage    = function (evt) {
+        dataChannel.onmessage = function (evt) {
             console.log("data channel message", evt)
-            emit(evt.data)
+            emit(JSON.parse(evt.data))
         }
-        dataChannel.onclose      = function (evt) {
+        dataChannel.onclose   = function (evt) {
             console.log("data channel closed", evt)
         }
         return () => {
@@ -117,6 +103,25 @@ function createDataChannelMessageChannel(dataChannel: RTCDataChannel) {
             dataChannel.close()
         }
     })
+}
+
+function* watchDataChannelMessageChannel(messageChannel: any, fromId: string, recipientId: string) {
+    while (true) {
+        const event = yield take(messageChannel)
+        switch (event.type) {
+            case "ui/mouseMove": {
+                console.log("putting action", event)
+                const point = event.payload
+                yield put(updateGhostMouse({fromId, point}))
+                break;
+            }
+            default:
+                console.log("found unknown data type", event.type, event)
+
+        }
+        console.log("DATA channel message recieved", messageChannel, event, fromId, recipientId)
+        // yield put(sendCandidate({fromId, recipientId, candidate}))
+    }
 }
 
 // creates an offer on the peerconnection and returns an action to be sent over the signalling
@@ -227,18 +232,20 @@ function* startConnectingToUserSaga(action: any) {
     console.log("Starting connection to ", recipientId)
     console.log("My id is ", id)
 
-    const peerConnection         = yield call(createPeerConnection)
+    const peerConnection = yield call(createPeerConnection)
     yield fork(watchPeerConnectionStatus, peerConnection, id, recipientId)
+    yield fork(watchConnectionForCandidates, peerConnection, id, recipientId)
+    yield fork(watchAnswerReceivedSignal, peerConnection)
+    yield fork(watchMakeOffer, peerConnection)
+    yield fork(watchCandidateReceivedSignal, peerConnection)
 
-    const peerChannel            = yield call(createRTCPeerConnectionChannel, peerConnection)
-    const sendDataChannel        = yield call(createDataChannel, peerConnection)
-    const sendDataChannelChannel = yield call(createDataChannelMessageChannel, sendDataChannel)
+    // const peerChannel            = yield call(createRTCPeerConnectionChannel, peerConnection)
+    const sendDataChannel = yield call(createDataChannel, peerConnection)
+    // const sendDataChannelChannel = yield call(createDataChannelMessageChannel, sendDataChannel)
     console.log("connection and peer created")
 
-    yield fork(watchConnectionForCandidates, peerConnection, id, recipientId)
-    yield fork(watchMakeOffer, peerConnection)
-    yield fork(watchAnswerReceivedSignal, peerConnection)
-    yield fork(watchCandidateReceivedSignal, peerConnection)
+    const messageChannel = createDataChannelMessageChannel(sendDataChannel)
+    yield fork(watchDataChannelMessageChannel, messageChannel, id, recipientId)
 
     yield put(offerUser({recipientId}))
     yield fork(watchMouseMove, sendDataChannel)
@@ -256,10 +263,6 @@ function* startRecievingConnectionFromOtherUserSaga(action: any) {
 
     const peerConnection = yield call(createPeerConnection)
     yield fork(watchPeerConnectionStatus, peerConnection, id, fromId)
-
-    const peerChannel    = yield call(createRTCPeerConnectionChannel, peerConnection)
-    // const receiveDataChannel    = yield call(createDataChannel, peerConnection)
-
     yield fork(watchConnectionForCandidates, peerConnection, id, fromId)
     yield fork(watchCandidateReceivedSignal, peerConnection)
 
@@ -267,6 +270,17 @@ function* startRecievingConnectionFromOtherUserSaga(action: any) {
     const answer = yield call(createAnswerAction, peerConnection, action, id)
     yield put(answer)
     console.log("answer created", answer)
+    // const peerChannel    = yield call(createRTCPeerConnectionChannel, peerConnection)
+    // const receiveDataChannel    = yield call(createDataChannel, peerConnection)
+    console.log("waiting for data channel");
+    const receiveDataChannel = yield call(getReceivingDataChannel, peerConnection)
+    console.log("recieved dataChannel", receiveDataChannel)
+
+    const messageChannel = createDataChannelMessageChannel(receiveDataChannel)
+
+    yield fork(watchDataChannelMessageChannel, messageChannel, id, fromId)
+    yield fork(watchMouseMove, receiveDataChannel)
+
 }
 
 export default function* webRtcRootSaga() {
