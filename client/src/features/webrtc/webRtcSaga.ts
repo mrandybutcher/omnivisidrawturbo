@@ -9,7 +9,7 @@ import {
     offerUser,
     sendAnswer,
     sendCandidate,
-    sendOffer
+    sendOffer, userConnectionStatus
 } from "./actions";
 import {canvasMouseMove} from "../ui/actions";
 
@@ -17,17 +17,14 @@ const configuration = {
     iceServers: [{urls: "stun:stun.1.google.com:19302"}]
 }
 
-function createRTCPeerConnection(): RTCPeerConnection {
+// creates a peer connection
+function createPeerConnection(): RTCPeerConnection {
     return new RTCPeerConnection(configuration)
 }
 
-function createRTCPeerConnectionChannel(connection: RTCPeerConnection) {
+// creates a channel which emits candidates from the peer connection
+function createPeerConnectionCandidateChannel(connection: RTCPeerConnection) {
     return eventChannel(emit => {
-
-        connection.onconnectionstatechange = function (event) {
-            console.log("connection state change", this.connectionState)
-        }
-
         connection.onicecandidate = function (event) {
             console.log("onicecandiate", event)
             const candidate = event.candidate?.toJSON()
@@ -35,9 +32,43 @@ function createRTCPeerConnectionChannel(connection: RTCPeerConnection) {
             if (candidate) {
                 emit(candidate)
             }
-
         }
-        connection.ondatachannel  = function (event) {
+        return () => {
+            console.log("returning from createPeerConnectionCandidateChannel")
+            // connection.close()
+        }
+    })
+}
+
+function createPeerConnectionStatusChannel(connection: RTCPeerConnection) {
+    return eventChannel(emit => {
+        connection.onconnectionstatechange = function (event) {
+            console.log("peer connection state change", this.connectionState)
+            emit(this.connectionState)
+        }
+        return () => {
+            console.log("returning from createPeerConnectionStatusChannel")
+        }
+    });
+}
+function* watchPeerConnectionStatus(connection: RTCPeerConnection, fromId: string, recipientId: string) {
+    const channel = createPeerConnectionStatusChannel(connection)
+    while (true) {
+        const status = yield take(channel)
+        yield put(userConnectionStatus({fromId, recipientId, status}))
+        console.log("PEER connection status update recieved", channel, status, fromId, recipientId)
+        // yield put(sendCandidate({fromId, recipientId, candidate}))
+    }
+}
+
+function createRTCPeerConnectionChannel(connection: RTCPeerConnection) {
+    return eventChannel(emit => {
+
+        // connection.onconnectionstatechange = function (event) {
+        //     console.log("connection state change", this.connectionState)
+        // }
+
+        connection.ondatachannel = function (event) {
             console.log("ondatachannel created", event)
             const receiveChannel     = event.channel
             receiveChannel.onopen    = function () {
@@ -59,16 +90,15 @@ function createRTCPeerConnectionChannel(connection: RTCPeerConnection) {
     })
 }
 
+// creates a data channel
 function createDataChannel(connection: RTCPeerConnection): RTCDataChannel {
     let dataChannel: RTCDataChannel = connection.createDataChannel("steve")
     return dataChannel
 }
 
-function createDataChannelChannel(dataChannel: RTCDataChannel) {
+// creates a channel which emits messages from the data channel
+function createDataChannelMessageChannel(dataChannel: RTCDataChannel) {
     return eventChannel(emit => {
-        const dataChannelOptions = {
-            reliable: true
-        }
         dataChannel.onopen       = function (err) {
             console.log("data channel OPEN")
         }
@@ -89,7 +119,8 @@ function createDataChannelChannel(dataChannel: RTCDataChannel) {
     })
 }
 
-function createOffer(connection: RTCPeerConnection, action: any, id: string) {
+// creates an offer on the peerconnection and returns an action to be sent over the signalling
+function createOfferAction(connection: RTCPeerConnection, action: any, id: string) {
     console.log("making offer ", action)
     return connection.createOffer()
         .then(offer => connection.setLocalDescription(offer))
@@ -107,20 +138,18 @@ function createOffer(connection: RTCPeerConnection, action: any, id: string) {
         })
 }
 
-function* startMakeOffer(connection: RTCPeerConnection, action: any) {
-    const id = yield select(selectUserId)
-    console.log("creating offer")
-    const offer = yield call(createOffer, connection, action, id)
-    yield put(offer)
-    console.log("offer created", offer)
-}
-
 function* watchMakeOffer(connection: RTCPeerConnection) {
     console.log("watching offers")
-    yield takeEvery<string, any>(offerUser.type, startMakeOffer, connection)
+    yield takeEvery<string, any>(offerUser.type, function* (connection: RTCPeerConnection, action: any) {
+        const id = yield select(selectUserId)
+        console.log("creating offer")
+        const offer = yield call(createOfferAction, connection, action, id)
+        yield put(offer)
+        console.log("offer created", offer)
+    }, connection)
 }
 
-function createAnswer(connection: RTCPeerConnection, action: any, id: string) {
+function createAnswerAction(connection: RTCPeerConnection, action: any, id: string) {
     console.log("making answer", action)
     return connection.setRemoteDescription(new RTCSessionDescription({
         type: "offer",
@@ -144,119 +173,107 @@ function createAnswer(connection: RTCPeerConnection, action: any, id: string) {
 }
 
 
-function startAnswerRecieved(connection: RTCPeerConnection, action: any) {
-    console.log("Answer recieved!", action)
-    connection.setRemoteDescription(new RTCSessionDescription({
-        type: "answer",
-        sdp: action.payload.answer
-    }))
-    console.log("Answer processed")
+// listens for answerReceived action that comes via signalling websocket
+function* watchAnswerReceivedSignal(connection: RTCPeerConnection) {
+    yield takeEvery<string, any>(answerReceived.type, function (connection: RTCPeerConnection, action: any) {
+        console.log("Answer recieved!", action)
+        connection.setRemoteDescription(new RTCSessionDescription({
+            type: "answer",
+            sdp: action.payload.answer
+        }))
+        console.log("Answer processed")
+    }, connection)
 }
 
-function* watchAnswerReceived(connection: RTCPeerConnection) {
-    yield takeEvery<string, any>(answerReceived.type, startAnswerRecieved, connection)
+// listens for candidateReceived action that comes via signalling websocket
+function* watchCandidateReceivedSignal(connection: RTCPeerConnection) {
+    yield takeEvery<string, any>(candidateReceived.type, function (connection: RTCPeerConnection, action: any) {
+        console.log("Candidate recieved!", action)
+        connection.addIceCandidate(new RTCIceCandidate(action.payload.candidate))
+        console.log("Candidate processed")
+    }, connection)
 }
 
-function startCandidateRecieved(connection: RTCPeerConnection, action: any) {
-    console.log("Candidate recieved!", action)
-    connection.addIceCandidate(new RTCIceCandidate(action.payload.candidate))
-    console.log("Candidate processed")
-}
-
-function* watchCandidateReceived(connection: RTCPeerConnection) {
-    yield takeEvery<string, any>(candidateReceived.type, startCandidateRecieved, connection)
-}
-
-function signalMouseMove(dataChannel: RTCDataChannel, action: any) {
-    console.log("signal mouse move", dataChannel.readyState, action)
-    if (dataChannel && dataChannel.readyState === "open") {
-        console.log("data channel sending", JSON.stringify(action))
-        dataChannel.send(JSON.stringify(action))
-    } else {
-        console.log("data channel not ready")
-    }
-}
 
 function* watchMouseMove(dataChannel: RTCDataChannel) {
-    yield takeEvery<string, any>(canvasMouseMove.type, signalMouseMove, dataChannel);
+    yield takeEvery<string, any>(canvasMouseMove.type, function (dataChannel: RTCDataChannel, action: any) {
+        console.log("signal mouse move", dataChannel.readyState, action)
+        if (dataChannel && dataChannel.readyState === "open") {
+            console.log("data channel sending", JSON.stringify(action))
+            dataChannel.send(JSON.stringify(action))
+        } else {
+            console.log("data channel not ready")
+        }
+    }, dataChannel);
+}
+
+// listens for candidates from the peerconnection and emits the actions to be sent over the signalling websocket
+function* watchConnectionForCandidates(connection: RTCPeerConnection, fromId: string, recipientId: string) {
+    const candidateChannel = createPeerConnectionCandidateChannel(connection)
+
+    while (true) {
+        const candidate = yield take(candidateChannel)
+        console.log("candidate recieved", candidateChannel, candidate)
+        yield put(sendCandidate({fromId, recipientId, candidate}))
+    }
 }
 
 
 // creates connection ready to send to other user
-function* startConnectToUser(action: any) {
+function* startConnectingToUserSaga(action: any) {
     const id          = yield select(selectUserId)
     const recipientId = action.payload.recipientId;
+
     console.log("Starting connection to ", recipientId)
     console.log("My id is ", id)
 
-    const peerConnection  = yield call(createRTCPeerConnection)
-    const peerChannel     = yield call(createRTCPeerConnectionChannel, peerConnection)
-    const sendDataChannel = yield call(createDataChannel, peerConnection)
-    const sendDataChannelChannel = yield call(createDataChannelChannel, sendDataChannel)
+    const peerConnection         = yield call(createPeerConnection)
+    yield fork(watchPeerConnectionStatus, peerConnection, id, recipientId)
+
+    const peerChannel            = yield call(createRTCPeerConnectionChannel, peerConnection)
+    const sendDataChannel        = yield call(createDataChannel, peerConnection)
+    const sendDataChannelChannel = yield call(createDataChannelMessageChannel, sendDataChannel)
     console.log("connection and peer created")
 
+    yield fork(watchConnectionForCandidates, peerConnection, id, recipientId)
     yield fork(watchMakeOffer, peerConnection)
-    yield fork(watchAnswerReceived, peerConnection)
-    yield fork(watchCandidateReceived, peerConnection)
+    yield fork(watchAnswerReceivedSignal, peerConnection)
+    yield fork(watchCandidateReceivedSignal, peerConnection)
 
-    yield put(offerUser({recipientId: action.payload.recipientId}))
+    yield put(offerUser({recipientId}))
     yield fork(watchMouseMove, sendDataChannel)
 
-
-    while (true) {
-        const candidate = yield take(peerChannel)
-        yield put(sendCandidate({fromId: id, recipientId, candidate}))
-        console.log("something recieved", peerChannel, candidate)
-
-        const data = yield take(sendDataChannelChannel)
-        console.log("data recieved in while loop", data)
-        // const data = yield take(dataChannel)
-        // console.log("got some data", data)
-    }
 }
 
 
 // creates connection ready to receive from other user
-function* startReceiveOffer(action: any) {
-    console.log("startRecieveOffer", action)
+function* startRecievingConnectionFromOtherUserSaga(action: any) {
     const id     = yield select(selectUserId)
     const fromId = action.payload.fromId;
     console.log("Starting requested connection from ", fromId)
     console.log("My id is ", id)
 
 
-    const peerConnection = yield call(createRTCPeerConnection)
+    const peerConnection = yield call(createPeerConnection)
+    yield fork(watchPeerConnectionStatus, peerConnection, id, fromId)
+
     const peerChannel    = yield call(createRTCPeerConnectionChannel, peerConnection)
     // const receiveDataChannel    = yield call(createDataChannel, peerConnection)
 
-    yield fork(watchCandidateReceived, peerConnection)
+    yield fork(watchConnectionForCandidates, peerConnection, id, fromId)
+    yield fork(watchCandidateReceivedSignal, peerConnection)
 
     console.log("creating answer")
-    const answer = yield call(createAnswer, peerConnection, action, id)
+    const answer = yield call(createAnswerAction, peerConnection, action, id)
     yield put(answer)
     console.log("answer created", answer)
-
-    while (true) {
-        const candidate = yield take(peerChannel)
-        // yield put(createCandidate, candidate)
-        yield put(sendCandidate({fromId: id, recipientId: fromId, candidate}))
-        console.log("something recieved", peerChannel, candidate)
-
-        // const data = yield take(dataChannel)
-        // console.log("got some data", data)
-    }
 }
-
-function* watchOfferReceived() {
-    yield takeEvery<string, any>(offerReceived.type, startReceiveOffer)
-}
-
-function* watchConnectToUser() {
-    yield takeEvery<string, any>(connectToUser.type, startConnectToUser)
-}
-
 
 export default function* webRtcRootSaga() {
-    yield fork(watchConnectToUser)
-    yield fork(watchOfferReceived)
+    yield fork(function* watchConnectToUser() {
+        yield takeEvery<string, any>(connectToUser.type, startConnectingToUserSaga)
+    })
+    yield fork(function* watchOfferReceived() {
+        yield takeEvery<string, any>(offerReceived.type, startRecievingConnectionFromOtherUserSaga)
+    })
 }

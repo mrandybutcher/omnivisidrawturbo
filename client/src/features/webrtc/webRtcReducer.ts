@@ -1,6 +1,6 @@
 import {createReducer} from "@reduxjs/toolkit";
 import {v4} from "uuid"
-import {updateName, usersUpdated, webSocketConnectionStatus} from "./actions";
+import {updateName, userConnectionStatus, usersUpdated, webSocketConnectionStatus} from "./actions";
 
 const adjectives = [
     "Big", "Little", "Super", "Random", "Uber", "Sketchy", "Cheeky"
@@ -13,7 +13,6 @@ const nouns = [
 export interface User {
     id: string,
     userName: string,
-    connected: boolean
 }
 
 interface PresenceState {
@@ -21,6 +20,7 @@ interface PresenceState {
     readonly name: string
     readonly connected: boolean
     readonly users: User[]
+    connectionStatus: {[index: string] : string}
 }
 
 function randomName(): string {
@@ -33,7 +33,8 @@ const initialPresenceState: PresenceState = {
     id: v4(),
     name: randomName(),
     connected: false,
-    users: []
+    users: [],
+    connectionStatus: {}
 }
 
 const webRtcReducer = createReducer(initialPresenceState as PresenceState, builder =>
@@ -47,6 +48,10 @@ const webRtcReducer = createReducer(initialPresenceState as PresenceState, build
         .addCase(usersUpdated, (state, action) => {
             state.users = action.payload
         })
+        .addCase(userConnectionStatus, (state, action) => {
+            state.connectionStatus[action.payload.recipientId] = action.payload.status ;
+            // state.connectionStatus[action.payload.fromId] = action.payload.status + " from"
+        })
 );
 
 export default webRtcReducer
@@ -58,7 +63,12 @@ export function getConnected(state: PresenceState) {
     return state.connected
 }
 export function getUsers(state: PresenceState) {
-    return state.users
+    return state.users.map(it => {
+        return {
+            status: state.connectionStatus[it.id],
+            ...it
+        }
+    })
 }
 export function getUserId(state: PresenceState) {
     return state.id

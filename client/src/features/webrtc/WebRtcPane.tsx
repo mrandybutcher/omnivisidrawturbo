@@ -41,11 +41,12 @@ export default function WebRtcPane() {
                     if(user.id == userId) {
                         return null;
                     }
-                    return <li key={idx}>{user.userName}
-                        <button onClick={() => {
-                            dispatch(connectToUser({recipientId: user.id}))
-                        }}>Offer
-                        </button>
+                    return <li key={idx}>{user.userName} &nbsp;
+                        {user.status ? <b>{user.status}</b> :
+                            <button onClick={() => {
+                                dispatch(connectToUser({recipientId: user.id}))
+                            }}>Connect</button>
+                        }
                     </li>
                 })}
             </ul>
