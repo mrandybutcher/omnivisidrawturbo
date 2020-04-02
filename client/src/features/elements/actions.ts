@@ -8,4 +8,4 @@ export const createElement         = createAction("elements/createElement", with
 export const translateElement      = createAction("elements/translateElement", withPayloadType<{ elementIds: ElementIdArray, point?: Point }>());
 export const scaleElement          = createAction("elements/scaleElement", withPayloadType<{ elementIds: ElementIdArray, startBox?: Box, targetBox?: Box }>());
 export const addPointToPolyLine    = createAction("elements/addPointToPolyLine", withPayloadType<{ elementId: ElementId, point: Point }>())
-export const updateElementGeometry = createAction("elements/updateElementGeometry", withPayloadType<{id: ElementId, property: string, value: string}>());
+export const updateElementGeometry = createAction("elements/updateElementGeometry", withPayloadType<{id: ElementId, property: string, value: number}>());

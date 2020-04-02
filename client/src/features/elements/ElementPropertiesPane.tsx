@@ -13,7 +13,7 @@ function EditableGeometryProperty({element, property, value}: { element: AnyElem
     const dispatch = useDispatch()
     function onKeyDown(e: { keyCode: number }) {
         if(e.keyCode == 13) {
-            return dispatch(updateElementGeometry({id: element.id, property: property, value: newValue || value}))
+            return dispatch(updateElementGeometry({id: element.id, property: property, value: parseInt(newValue || value)}))
         }
     }
 
