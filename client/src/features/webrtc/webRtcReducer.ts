@@ -1,6 +1,7 @@
 import {createReducer} from "@reduxjs/toolkit";
 import {v4} from "uuid"
-import {updateName, userConnectionStatus, usersUpdated, webSocketConnectionStatus} from "./actions";
+import {updateGhostMouse, updateName, userConnectionStatus, usersUpdated, webSocketConnectionStatus} from "./actions";
+import {Point} from "../../lib/geometry/point";
 
 const adjectives = [
     "Big", "Little", "Super", "Random", "Uber", "Sketchy", "Cheeky"
@@ -20,7 +21,8 @@ interface PresenceState {
     readonly name: string
     readonly connected: boolean
     readonly users: User[]
-    connectionStatus: {[index: string] : string}
+    readonly connectionStatus: { [index: string]: string }
+    readonly ghostMice: { [index: string]: Point }
 }
 
 function randomName(): string {
@@ -34,7 +36,8 @@ const initialPresenceState: PresenceState = {
     name: randomName(),
     connected: false,
     users: [],
-    connectionStatus: {}
+    connectionStatus: {},
+    ghostMice: {}
 }
 
 const webRtcReducer = createReducer(initialPresenceState as PresenceState, builder =>
@@ -49,8 +52,11 @@ const webRtcReducer = createReducer(initialPresenceState as PresenceState, build
             state.users = action.payload
         })
         .addCase(userConnectionStatus, (state, action) => {
-            state.connectionStatus[action.payload.recipientId] = action.payload.status ;
+            state.connectionStatus[action.payload.recipientId] = action.payload.status;
             // state.connectionStatus[action.payload.fromId] = action.payload.status + " from"
+        })
+        .addCase(updateGhostMouse, (state, action) => {
+            state.ghostMice[action.payload.fromId] = action.payload.point;
         })
 );
 
@@ -59,9 +65,11 @@ export default webRtcReducer
 export function getName(state: PresenceState) {
     return state.name
 }
+
 export function getConnected(state: PresenceState) {
     return state.connected
 }
+
 export function getUsers(state: PresenceState) {
     return state.users.map(it => {
         return {
@@ -70,7 +78,15 @@ export function getUsers(state: PresenceState) {
         }
     })
 }
+
 export function getUserId(state: PresenceState) {
     return state.id
 }
 
+
+export function getGhostMice(state: PresenceState) {
+    return Object.keys(state.ghostMice).map(key => ({
+        point: state.ghostMice[key],
+        userName: state.users?.find(it => it.id === key)?.userName || "ghost" // TODO sort this out
+    }))
+}
