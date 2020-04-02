@@ -11,6 +11,7 @@ import {
     sendCandidate,
     sendOffer
 } from "./actions";
+import {canvasMouseMove} from "../ui/actions";
 
 const configuration = {
     iceServers: [{urls: "stun:stun.1.google.com:19302"}]
@@ -44,7 +45,10 @@ function createRTCPeerConnectionChannel(connection: RTCPeerConnection) {
             }
             receiveChannel.onmessage = function (event) {
                 console.log("Message Recieved", event)
-                emit(event.data)
+                // emit(event.data)
+            }
+            receiveChannel.onclose   = function (event) {
+                console.log("Receive channel closed", event)
             }
         }
 
@@ -55,22 +59,28 @@ function createRTCPeerConnectionChannel(connection: RTCPeerConnection) {
     })
 }
 
-function createDataChannel(connection: RTCPeerConnection) {
+function createDataChannel(connection: RTCPeerConnection): RTCDataChannel {
+    let dataChannel: RTCDataChannel = connection.createDataChannel("steve")
+    return dataChannel
+}
+
+function createDataChannelChannel(dataChannel: RTCDataChannel) {
     return eventChannel(emit => {
         const dataChannelOptions = {
             reliable: true
         }
-
-        let dataChannel       = connection.createDataChannel("steve")
-        dataChannel.onopen    = function (err) {
+        dataChannel.onopen       = function (err) {
             console.log("data channel OPEN")
         }
-        dataChannel.onerror   = function (err) {
+        dataChannel.onerror      = function (err) {
             console.log("data channel error", err)
         }
-        dataChannel.onmessage = function (evt) {
+        dataChannel.onmessage    = function (evt) {
             console.log("data channel message", evt)
             emit(evt.data)
+        }
+        dataChannel.onclose      = function (evt) {
+            console.log("data channel closed", evt)
         }
         return () => {
             console.log("Closing data channel")
@@ -157,9 +167,20 @@ function* watchCandidateReceived(connection: RTCPeerConnection) {
     yield takeEvery<string, any>(candidateReceived.type, startCandidateRecieved, connection)
 }
 
-function* createCandidate(candidate: RTCIceCandidate) {
-
+function signalMouseMove(dataChannel: RTCDataChannel, action: any) {
+    console.log("signal mouse move", dataChannel.readyState, action)
+    if (dataChannel && dataChannel.readyState === "open") {
+        console.log("data channel sending", JSON.stringify(action))
+        dataChannel.send(JSON.stringify(action))
+    } else {
+        console.log("data channel not ready")
+    }
 }
+
+function* watchMouseMove(dataChannel: RTCDataChannel) {
+    yield takeEvery<string, any>(canvasMouseMove.type, signalMouseMove, dataChannel);
+}
+
 
 // creates connection ready to send to other user
 function* startConnectToUser(action: any) {
@@ -168,9 +189,10 @@ function* startConnectToUser(action: any) {
     console.log("Starting connection to ", recipientId)
     console.log("My id is ", id)
 
-    const peerConnection = yield call(createRTCPeerConnection)
-    const peerChannel    = yield call(createRTCPeerConnectionChannel, peerConnection)
-    const dataChannel    = yield call(createDataChannel, peerConnection)
+    const peerConnection  = yield call(createRTCPeerConnection)
+    const peerChannel     = yield call(createRTCPeerConnectionChannel, peerConnection)
+    const sendDataChannel = yield call(createDataChannel, peerConnection)
+    const sendDataChannelChannel = yield call(createDataChannelChannel, sendDataChannel)
     console.log("connection and peer created")
 
     yield fork(watchMakeOffer, peerConnection)
@@ -178,6 +200,7 @@ function* startConnectToUser(action: any) {
     yield fork(watchCandidateReceived, peerConnection)
 
     yield put(offerUser({recipientId: action.payload.recipientId}))
+    yield fork(watchMouseMove, sendDataChannel)
 
 
     while (true) {
@@ -185,6 +208,8 @@ function* startConnectToUser(action: any) {
         yield put(sendCandidate({fromId: id, recipientId, candidate}))
         console.log("something recieved", peerChannel, candidate)
 
+        const data = yield take(sendDataChannelChannel)
+        console.log("data recieved in while loop", data)
         // const data = yield take(dataChannel)
         // console.log("got some data", data)
     }
@@ -202,7 +227,7 @@ function* startReceiveOffer(action: any) {
 
     const peerConnection = yield call(createRTCPeerConnection)
     const peerChannel    = yield call(createRTCPeerConnectionChannel, peerConnection)
-    const dataChannel    = yield call(createDataChannel, peerConnection)
+    // const receiveDataChannel    = yield call(createDataChannel, peerConnection)
 
     yield fork(watchCandidateReceived, peerConnection)
 
@@ -229,6 +254,7 @@ function* watchOfferReceived() {
 function* watchConnectToUser() {
     yield takeEvery<string, any>(connectToUser.type, startConnectToUser)
 }
+
 
 export default function* webRtcRootSaga() {
     yield fork(watchConnectToUser)

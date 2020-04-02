@@ -1,6 +1,7 @@
 import {createAction} from "@reduxjs/toolkit";
 import {withPayloadType} from "../../lib/utils";
 import {User} from "./webRtcReducer";
+import {Point} from "../../lib/geometry/point";
 
 export const updateName                = createAction("webrtc/updateName", withPayloadType<string>());
 export const webSocketConnectionStatus = createAction("webrtc/webSocketConnectionStatus", withPayloadType<boolean>());
@@ -24,4 +25,6 @@ export const candidateReceived = createAction("webrtc/signalling/candidateReceiv
 export const usersUpdated      = createAction("webrtc/signalling/usersUpdated", withPayloadType<User[]>())
 
 
+// actions over data channel
+export const updateGhostMouse = createAction("webrtc/data/updateGhostMouse", withPayloadType<{fromId: string, point: Point}>())
 
