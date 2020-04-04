@@ -19,11 +19,13 @@ interface MakeOffer {
     readonly recipientId: string
     readonly offer: string
 }
+
 interface MakeAnswer {
     readonly type: "makeanswer"
     readonly recipientId: string
     readonly answer: string
 }
+
 interface MakeCandiate {
     readonly type: "makecandidate"
     readonly recipientId: string
@@ -45,18 +47,21 @@ interface UpdateUsersMessage {
 interface ConnectedMessage {
     readonly type: "connected"
 }
+
 interface OfferMessage {
     readonly type: "offer",
     readonly offer: string,
     readonly fromId: string,
     readonly fromName: string
 }
+
 interface AnswerMessage {
     readonly type: "answer",
     readonly answer: string,
     readonly fromId: string,
     readonly fromName: string
 }
+
 interface CandidateMessage {
     readonly type: "candidate"
     readonly fromId: string,
@@ -65,7 +70,13 @@ interface CandidateMessage {
 }
 
 
-type ResponseMessage = LoginErrorResponse | UpdateUsersMessage | ConnectedMessage | OfferMessage | AnswerMessage | CandidateMessage
+type ResponseMessage =
+    LoginErrorResponse
+    | UpdateUsersMessage
+    | ConnectedMessage
+    | OfferMessage
+    | AnswerMessage
+    | CandidateMessage
 
 interface UserInfo {
     userName?: string,
@@ -120,12 +131,13 @@ function parseRequest(data: Data): RequestMessage | undefined {
         console.warn("data type is not string", data)
     }
 }
+
 function updateUsers(wss: WebSocket.Server) {
     const loggedInUsers = Object.values(
         users
     ).map(({id, userName}) => ({id, userName}));
 
-    sendToAll(wss,{
+    sendToAll(wss, {
         type: "updateusers",
         users: loggedInUsers
     })
@@ -151,7 +163,7 @@ function handleRequest(request: RequestMessage, ws: WebSocket & UserInfo, wss: W
             }
             break;
         }
-        case "updateusername":{
+        case "updateusername": {
             if (users[request.id]) {
                 users[request.id].userName = request.userName;
                 updateUsers(wss)
@@ -165,10 +177,10 @@ function handleRequest(request: RequestMessage, ws: WebSocket & UserInfo, wss: W
             break;
         }
         case "makeoffer": {
-            const {recipientId , offer} = request;
-            const user = users
-            const recipSocket = users[recipientId]
-            if(recipSocket) {
+            const {recipientId, offer} = request;
+            const user                 = users
+            const recipSocket          = users[recipientId]
+            if (recipSocket) {
                 sendTo(recipSocket, {
                     type: "offer",
                     offer,
@@ -181,10 +193,10 @@ function handleRequest(request: RequestMessage, ws: WebSocket & UserInfo, wss: W
 
         }
         case "makeanswer": {
-            const {recipientId , answer} = request;
-            const user = users
-            const recipSocket = users[recipientId]
-            if(recipSocket) {
+            const {recipientId, answer} = request;
+            const user                  = users
+            const recipSocket           = users[recipientId]
+            if (recipSocket) {
                 sendTo(recipSocket, {
                     type: "answer",
                     answer,
@@ -195,10 +207,10 @@ function handleRequest(request: RequestMessage, ws: WebSocket & UserInfo, wss: W
             break;
         }
         case "makecandidate": {
-            const {recipientId , candidate} = request;
-            const user = users
-            const recipSocket = users[recipientId]
-            if(recipSocket) {
+            const {recipientId, candidate} = request;
+            const user                     = users
+            const recipSocket              = users[recipientId]
+            if (recipSocket) {
                 sendTo(recipSocket, {
                     type: "candidate",
                     candidate,

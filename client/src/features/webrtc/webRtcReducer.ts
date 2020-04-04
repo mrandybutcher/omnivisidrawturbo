@@ -1,6 +1,13 @@
 import {createReducer} from "@reduxjs/toolkit";
 import {v4} from "uuid"
-import {updateGhostMouse, updateName, userConnectionStatus, usersUpdated, webSocketConnectionStatus} from "./actions";
+import {
+    updateGhostMouse,
+    updateName,
+    userConnectionStatus,
+    userDataConnectionStatus,
+    usersUpdated,
+    webSocketConnectionStatus
+} from "./actions";
 import {Point} from "../../lib/geometry/point";
 
 const adjectives = [
@@ -22,6 +29,7 @@ interface PresenceState {
     readonly connected: boolean
     readonly users: User[]
     readonly connectionStatus: { [index: string]: string }
+    readonly dataConnectionStatus: { [index: string]: string }
     readonly ghostMice: { [index: string]: Point }
 }
 
@@ -37,7 +45,8 @@ const initialPresenceState: PresenceState = {
     connected: false,
     users: [],
     connectionStatus: {},
-    ghostMice: {}
+    ghostMice: {},
+    dataConnectionStatus: {}
 }
 
 const webRtcReducer = createReducer(initialPresenceState as PresenceState, builder =>
@@ -53,6 +62,10 @@ const webRtcReducer = createReducer(initialPresenceState as PresenceState, build
         })
         .addCase(userConnectionStatus, (state, action) => {
             state.connectionStatus[action.payload.recipientId] = action.payload.status;
+            // state.connectionStatus[action.payload.fromId] = action.payload.status + " from"
+        })
+        .addCase(userDataConnectionStatus, (state, action) => {
+            state.dataConnectionStatus[action.payload.recipientId] = action.payload.status;
             // state.connectionStatus[action.payload.fromId] = action.payload.status + " from"
         })
         .addCase(updateGhostMouse, (state, action) => {

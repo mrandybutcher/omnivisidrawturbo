@@ -23,11 +23,12 @@
 * [x] Stop Canvas re-rendering so much (useCallback wrap param passed to useDrag?)
 * [x] Move the colours into a SCSS file
 * [x] Prevent all elements re-rendering when one is moved
+* [x] Replace random id generation with proper uuid's
+* [ ] Stop mouse position going funky over text
 * [ ] Combine selection scale/transform to single transform that is all box based
 * [ ] Write some Tests
 * [ ] Use reselect for more component selectors to speed things up
 * [ ] Abstract mousedown to detect clicks and ready for touch support
-* [x] Replace random id generation with proper uuid's
 * [ ] Dig into performance a bit once reselect done
 * [ ] Less OMG UI
 

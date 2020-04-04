@@ -2,7 +2,7 @@ import React, {useState} from "react"
 import {Pane} from "../chrome/Pane";
 import {useDispatch, useSelector} from "react-redux";
 import {selectConnected, selectUserId, selectUserName, selectUsers} from "../../app/selectors";
-import {connectToUser, offerUser, updateName} from "./actions";
+import {connectToUser, updateName} from "./actions";
 
 export default function WebRtcPane() {
     const userName              = useSelector(selectUserName)
@@ -38,7 +38,7 @@ export default function WebRtcPane() {
             {connected ? <b>Connected</b> : <b>Not connected</b>}
             <ul style={{paddingLeft: "1em"}}>
                 {Array.isArray(users) && users.map((user, idx) => {
-                    if(user.id == userId) {
+                    if (user.id === userId) {
                         return null;
                     }
                     return <li key={idx}>{user.userName} &nbsp;

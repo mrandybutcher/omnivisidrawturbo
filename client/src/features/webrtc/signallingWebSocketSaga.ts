@@ -14,29 +14,34 @@ import {
 } from "./actions";
 
 function createWebSocketConnection(): WebSocket {
-    return new WebSocket("ws://192.168.0.25:8080")
+    // return new WebSocket("ws://192.168.0.25:8080")
+    return new WebSocket("wss://ws.r3b.dev/")
+    // return new WebSocket("ws://omnivis.herokuapp.com:8080")
 }
 
 function createWebSocketChannel(ws: WebSocket) {
     return eventChannel(emit => {
 
         ws.onclose = function (e) {
-            console.log("websocket closing")
+            console.log("Signalling websocket closing", e)
             emit(new Error(e.reason))
+        }
+        ws.onerror = function(e) {
+            console.log("Signalling websocket error", e)
         }
 
         ws.onopen = function (e) {
-            console.log("websocket opening")
+            console.log("Signalling websocket opening")
         }
 
         ws.onmessage = function (msg) {
             const data = JSON.parse(msg.data)
-            console.log("Message recieved", data)
+            // console.log("Message recieved", data)
             emit(data)
         }
 
         return () => {
-            console.log("closing websocket")
+            console.log("Signalling closing websocket")
             ws.close()
         };
     })
@@ -61,13 +66,13 @@ function* watchNameUpdate(socket: WebSocket) {
 }
 
 function* signalOffer(socket: WebSocket, action: any) {
-    console.log("send offer", action)
+    // console.log("send offer", action)
     const msg = JSON.stringify({
         recipientId: action.payload.recipientId,
         offer: action.payload.offer,
         type: "makeoffer"
     })
-    console.log("sendOfferMessage", msg)
+    // console.log("sendOfferMessage", msg)
     yield apply(socket, socket.send, [msg])
 }
 
@@ -78,7 +83,7 @@ function* signalAnswer(socket: WebSocket, action: any) {
         answer: action.payload.answer,
         type: "makeanswer"
     })
-    console.log("sendAnswerMessage", msg)
+    // console.log("sendAnswerMessage", msg)
     yield apply(socket, socket.send, [msg])
 }
 
@@ -89,7 +94,7 @@ function* signalCandidate(socket: WebSocket, action: any) {
         candidate: action.payload.candidate,
         type: "makecandidate"
     })
-    console.log("sendCandidate message", msg)
+    // console.log("sendCandidate message", msg)
     yield apply(socket, socket.send, [msg])
 }
 

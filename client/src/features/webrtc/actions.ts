@@ -6,6 +6,7 @@ import {Point} from "../../lib/geometry/point";
 export const updateName                = createAction("webrtc/updateName", withPayloadType<string>());
 export const webSocketConnectionStatus = createAction("webrtc/webSocketConnectionStatus", withPayloadType<boolean>());
 export const userConnectionStatus      = createAction("webrtc/userConnectionStatus", withPayloadType<{ fromId: string, recipientId: string, status: string }>())
+export const userDataConnectionStatus      = createAction("webrtc/userDataConnectionStatus", withPayloadType<{ fromId: string, recipientId: string, status: string }>())
 
 
 // sending side
