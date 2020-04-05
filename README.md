@@ -4,14 +4,14 @@
 * Install [React Dev Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
 * Install [Redux Dev Tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
 * In redux dev tools settings -> Filter Actions in DevTools -> Hide the following "ui/mouseMove"
-* Run "yarn install"
+* Run ```yarn install```
 
 ## Build the shared libs when they change
-* Run "yarn build:watch:shared"
+* Run ```yarn build:watch:shared```
 ## Run Client in Dev Mode
-* Run "yarn start:client"
+* Run ```yarn start:client```
 ## Run Server (only necessary for collab)
-* Run "yarn start:server"
+* Run ```yarn start:server```
 
 ## Help
 * Send pull requests or raise tickets for bugs/features
