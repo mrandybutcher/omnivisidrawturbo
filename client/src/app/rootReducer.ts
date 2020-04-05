@@ -7,12 +7,12 @@ import webRtcReducer from "../features/webrtc/webRtcReducer"
 import {combineReducers} from "redux";
 
 const rootReducer = combineReducers({
-    canvas: canvasReducer,
-    elements: elementsReducer,
-    selection: selectionReducer,
+    canvas:           canvasReducer,
+    elements:         elementsReducer,
+    selection:        selectionReducer,
     selectionDragBox: selectionDragBoxReducer,
-    ui: uiReducer,
-    presence: webRtcReducer
+    ui:               uiReducer,
+    presence:         webRtcReducer
 });
 
 export default rootReducer

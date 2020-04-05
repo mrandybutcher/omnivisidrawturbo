@@ -11,7 +11,7 @@ import {getDragBox} from "./getters";
 export const selectionDragBoxDragStart = createAction("selectionDragBox/dragBoxDragStart", withPayloadType<Point>());
 export const selectionDragBoxDrag      = createAction("selectionDragBox/dragBoxDrag", withPayloadType<Point>());
 export const _selectionDragBoxDragEnd  = createAction("selectionDragBox/dragBoxDragEnd", withPayloadType<{ elementIds: ElementIdArray, box: Box }>());
-export const selectionDragBoxDragEnd   = (point: Point): AppThunk => (dispatch, getState) => {
+export const selectionDragBoxDragEnd = (point: Point): AppThunk => (dispatch, getState) => {
     const {selectionDragBox, elements} = getState();
     const draggedBox                   = getDragBox(selectionDragBox);
     const elementIds                   = getElementIdsInBox(elements, draggedBox);

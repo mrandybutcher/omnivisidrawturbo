@@ -19,8 +19,8 @@ const notDragging: NotDragging = {state: "notdragging"};
 function dragStateDrag(dragState: DragState, currentPoint: Point): DragState {
     if (dragState.state === "notdragging") {
         return {
-            state: "dragging",
-            startPoint: currentPoint,
+            state:        "dragging",
+            startPoint:   currentPoint,
             currentPoint: currentPoint,
         }
     }
