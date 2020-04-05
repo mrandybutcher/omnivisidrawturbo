@@ -4,14 +4,15 @@
 * Install [React Dev Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
 * Install [Redux Dev Tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
 * In redux dev tools settings -> Filter Actions in DevTools -> Hide the following "ui/mouseMove"
-## Client
-* cd client
 * Run "yarn install"
-* Run "yarn start"
-## Server (only necessary for collab)
-* cd server
-* Run "yarn install"
-* Run "yarn start"
+
+## Build the shared libs when they change
+* Run "yarn build:watch:shared"
+## Run Client in Dev Mode
+* Run "yarn start:client"
+## Run Server (only necessary for collab)
+* Run "yarn start:server"
+
 ## Help
 * Send pull requests or raise tickets for bugs/features
 * Ideally pick stuff off the list below
@@ -24,6 +25,7 @@
 * [x] Move the colours into a SCSS file
 * [x] Prevent all elements re-rendering when one is moved
 * [x] Replace random id generation with proper uuid's
+* [x] Convert to use yarn workspaces
 * [ ] Stop mouse position going funky over text
 * [ ] Combine selection scale/transform to single transform that is all box based
 * [ ] Write some Tests

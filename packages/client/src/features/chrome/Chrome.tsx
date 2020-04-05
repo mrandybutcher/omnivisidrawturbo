@@ -7,7 +7,7 @@ import ElementListPane from "../elements/ElementListPane";
 import {SelectionPane} from "../selection/SelectionPane";
 import Toolbar from "./Toolbar";
 import Menu from './Menu';
-import WebRtcPane from "../webrtc/WebRtcPane";
+// import WebRtcPane from "../webrtc/WebRtcPane";
 
 interface ChromeProps {
     children: React.ReactNode;
@@ -25,7 +25,7 @@ export default function Chrome({children}: ChromeProps) {
                 <div className={styles.left}>
                     <ElementTypesPane/>
                     <ElementListPane/>
-                    <WebRtcPane/>
+                    {/*<WebRtcPane/>*/}
                 </div>
                 <div className={styles.main}>
                     {children}

@@ -5,8 +5,8 @@ import webRtcSaga from "../features/webrtc/webRtcSaga";
 
 export default function* rootSaga() {
     yield all([
-        websocketSaga(),
-        webRtcSaga()
+        // websocketSaga(),
+        // webRtcSaga()
     ])
 
 }

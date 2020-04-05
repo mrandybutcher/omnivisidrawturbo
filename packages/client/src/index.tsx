@@ -4,6 +4,7 @@ import {Provider} from "react-redux";
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import store from "./app/store"
+import {doSteve} from "omnivisidrawturbo-shared"
 
 function render() {
     const App = require('./app/App').default
@@ -15,6 +16,8 @@ function render() {
         document.getElementById('root')
     )
 }
+
+console.log(doSteve());
 
 render();
 
