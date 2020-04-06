@@ -4,20 +4,20 @@ import {AppThunk} from "../../app/store";
 import {Direction} from "../../lib/direction";
 import {Point} from "../../lib/geometry/point";
 import {Box} from "../../lib/geometry/box";
-import {withPayloadType} from "../../lib/utils";
 import {getSelectedElementIds, getSelectionDelta, getSelectionStartBox, getSelectionTargetBox} from "./getters";
 import {getBoxForElementIds} from "../elements/getters";
 import {scaleElement, translateElement} from "../elements/actions";
 import {batch} from "react-redux";
+import {withLocalPayload} from "omnivisidrawturbo-shared"
 
-export const _selectionSetItems          = createAction("selection/setItems", withPayloadType<{ elementIds: ElementIdArray, box: Box }>());
-export const selectionClear              = createAction("selection/clear", withPayloadType<void>());
-export const selectionTranslateDragStart = createAction("selection/translateDragStart", withPayloadType<Point>());
-export const selectionTranslateDrag      = createAction("selection/translateDrag", withPayloadType<Point>());
-export const _selectionTranslateDragEnd  = createAction("selection/translateDragEnd", withPayloadType<{ elementIds: ElementIdArray, point?: Point }>());
-export const selectionScaleDragStart     = createAction("selection/scaleDragStart", withPayloadType<{ direction: Direction, point: Point }>());
-export const selectionScaleDrag          = createAction("selection/scaleDrag", withPayloadType<{ direction: Direction, point: Point }>());
-export const _selectionScaleDragEnd      = createAction("selection/scaleDragEnd", withPayloadType<{ elementIds: ElementIdArray, startBox?: Box, targetBox?: Box }>());
+export const _selectionSetItems          = createAction("selection/setItems", withLocalPayload<{ elementIds: ElementIdArray, box: Box }>());
+export const selectionClear              = createAction("selection/clear", withLocalPayload<void>());
+export const selectionTranslateDragStart = createAction("selection/translateDragStart", withLocalPayload<Point>());
+export const selectionTranslateDrag      = createAction("selection/translateDrag", withLocalPayload<Point>());
+export const _selectionTranslateDragEnd  = createAction("selection/translateDragEnd", withLocalPayload<{ elementIds: ElementIdArray, point?: Point }>());
+export const selectionScaleDragStart     = createAction("selection/scaleDragStart", withLocalPayload<{ direction: Direction, point: Point }>());
+export const selectionScaleDrag          = createAction("selection/scaleDrag", withLocalPayload<{ direction: Direction, point: Point }>());
+export const _selectionScaleDragEnd      = createAction("selection/scaleDragEnd", withLocalPayload<{ elementIds: ElementIdArray, startBox?: Box, targetBox?: Box }>());
 
 
 export const selectionSetItem = (elementId: ElementId): AppThunk => (dispatch, getState) => {

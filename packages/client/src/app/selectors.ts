@@ -2,6 +2,7 @@ import {AnyElement, ElementId, ElementIdArray, elementScale, elementTranslate} f
 import {
     RootState,
     selectCanvasState,
+    selectConnectionState,
     selectElementsState,
     selectPresenceState,
     selectSelectionDragBoxState,
@@ -17,10 +18,12 @@ import {
 } from "../features/selection/getters";
 import {getAllElementIds, getAllElements, getElementById, getElementsByIds} from "../features/elements/getters";
 import {getDragBox} from "../features/selectionDragBox/getters";
-import {getCanvasSize} from "../features/canvas/getters";
 import {createSelector} from "@reduxjs/toolkit";
 import {getMousePosition, getTool, getZoom} from "../features/ui/getters";
-import {getConnected, getGhostMice, getName, getUserId, getUsers} from "../features/webrtc/webRtcReducer";
+import {getName, getUserId, getUsers} from "../features/presence/presenceReducer";
+import {getCanvasSize} from "../features/canvas/canvasReducer"
+import {getConnectionStatus} from "../features/connection/connectionReducer"
+import {getGhostMice} from "../features/ui/uiReducer"
 
 export function selectAllElementsTransformed(state: RootState): (AnyElement)[] {
     // @TODO probably a more efficient way to do this
@@ -91,8 +94,8 @@ export const selectSelectedElementsTransformed = createSelector(
     (selectedElementIdSet, allElements) => allElements.filter(it => selectedElementIdSet.has(it.id))
 )
 
-export const selectUserName  = createSelector(selectPresenceState, getName)
-export const selectConnected = createSelector(selectPresenceState, getConnected)
-export const selectUsers     = createSelector(selectPresenceState, getUsers)
-export const selectUserId     = createSelector(selectPresenceState, getUserId)
-export const selectGhostMice     = createSelector(selectPresenceState, getGhostMice)
+export const selectUserName         = createSelector(selectPresenceState, getName)
+export const selectConnectionStatus = createSelector(selectConnectionState, getConnectionStatus)
+export const selectUsers            = createSelector(selectPresenceState, getUsers)
+export const selectUserId           = createSelector(selectPresenceState, getUserId)
+export const selectGhostMice        = createSelector(selectUiState, getGhostMice)

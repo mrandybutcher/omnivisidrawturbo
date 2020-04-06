@@ -5,7 +5,7 @@ import BackgroundGrid from "../features/canvas/BackgroundGrid";
 import Elements from "../features/elements/Elements";
 import SelectionBox from "../features/selection/SelectionBox";
 import SelectionDragBox from "../features/selectionDragBox/SelectionDragBox";
-import GhostMice from "../features/webrtc/GhostMice";
+import GhostMice from "../features/ui/GhostMice"
 
 export default function App() {
     return (

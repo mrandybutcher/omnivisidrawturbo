@@ -4,7 +4,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.2.4"
+  },
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch"

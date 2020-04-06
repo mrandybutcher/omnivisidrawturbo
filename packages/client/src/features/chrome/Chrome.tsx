@@ -7,6 +7,8 @@ import ElementListPane from "../elements/ElementListPane";
 import {SelectionPane} from "../selection/SelectionPane";
 import Toolbar from "./Toolbar";
 import Menu from './Menu';
+import PresencePane from "../presence/PresencePane"
+import ConnectionPane from "../connection/ConnectionPane"
 // import WebRtcPane from "../webrtc/WebRtcPane";
 
 interface ChromeProps {
@@ -25,7 +27,8 @@ export default function Chrome({children}: ChromeProps) {
                 <div className={styles.left}>
                     <ElementTypesPane/>
                     <ElementListPane/>
-                    {/*<WebRtcPane/>*/}
+                    <PresencePane/>
+                    <ConnectionPane/>
                 </div>
                 <div className={styles.main}>
                     {children}

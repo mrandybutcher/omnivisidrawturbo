@@ -3,8 +3,9 @@ import elementsReducer from "../features/elements/elementsReducer";
 import selectionDragBoxReducer from "../features/selectionDragBox/selectionDragBoxReducer";
 import canvasReducer from "../features/canvas/canvasReducer";
 import uiReducer from "../features/ui/uiReducer"
-import webRtcReducer from "../features/webrtc/webRtcReducer"
+import presenceReducer from "../features/presence/presenceReducer"
 import {combineReducers} from "redux";
+import connectionReducer from "../features/connection/connectionReducer"
 
 const rootReducer = combineReducers({
     canvas:           canvasReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     selection:        selectionReducer,
     selectionDragBox: selectionDragBoxReducer,
     ui:               uiReducer,
-    presence:         webRtcReducer
+    presence:         presenceReducer,
+    connection:       connectionReducer
 });
 
 export default rootReducer
@@ -24,3 +26,4 @@ export const selectSelectionState        = (state: RootState) => state.selection
 export const selectSelectionDragBoxState = (state: RootState) => state.selectionDragBox
 export const selectUiState               = (state: RootState) => state.ui
 export const selectPresenceState         = (state: RootState) => state.presence
+export const selectConnectionState       = (state: RootState) => state.connection
