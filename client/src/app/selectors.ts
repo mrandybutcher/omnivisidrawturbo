@@ -98,4 +98,15 @@ export const selectUserName         = createSelector(selectPresenceState, getNam
 export const selectConnectionStatus = createSelector(selectConnectionState, getConnectionStatus)
 export const selectUsers            = createSelector(selectPresenceState, getUsers)
 export const selectUserId           = createSelector(selectPresenceState, getUserId)
-export const selectGhostMice        = createSelector(selectUiState, getGhostMice)
+export const selectGhostMice = (state: RootState) => {
+    const mice = getGhostMice(selectUiState(state))
+    const users = getUsers(selectPresenceState(state))
+    return Object.keys(mice).map(key => ({
+        point:    mice[key],
+        userName: users?.find(it => it.id === key)?.userName || "ghost" // TODO sort this out
+    }))
+
+
+}
+// export const selectGhostMice        = createSelector(selectUiState, getGhostMice)
+

@@ -20,7 +20,7 @@ export default function Chrome({children}: ChromeProps) {
         <div className={styles.root}>
             <div className={styles.header}>
                 <h1 style={{float: "left"}}>OmniVisiDraw TURBO &nbsp;</h1>
-                <Menu/>
+                {/*<Menu/>*/}
                 <Toolbar/>
             </div>
             <div className={styles.middle}>
