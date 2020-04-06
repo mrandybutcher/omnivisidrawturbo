@@ -1,0 +1,13 @@
+{
+  "name": "omnivisidrawturbo-server",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "ws": "^7.2.3"
+  },
+  "devDependencies": {
+  },
+  "scripts": {
+    "start": "node src/server.js"
+  }
+}
