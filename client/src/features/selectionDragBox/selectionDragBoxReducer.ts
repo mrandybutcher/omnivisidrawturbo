@@ -1,6 +1,7 @@
 import {createReducer} from "@reduxjs/toolkit";
 import {Point} from "../../lib/geometry/point";
 import {_selectionDragBoxDragEnd, selectionDragBoxDrag, selectionDragBoxDragStart} from "./actions";
+import {createGhostReducer} from "../../lib/ghostState"
 
 
 interface NotDragging {
@@ -33,7 +34,6 @@ function dragStateDrag(dragState: DragState, currentPoint: Point): DragState {
 const selectionDragBoxReducer = createReducer(notDragging as DragState, builder =>
     builder
         .addCase(selectionDragBoxDragStart, (state, action) => {
-
             if (state.state !== "notdragging") {
                 console.log("drag lag")
             }
@@ -53,5 +53,5 @@ const selectionDragBoxReducer = createReducer(notDragging as DragState, builder 
 );
 
 
-export default selectionDragBoxReducer;
+export default createGhostReducer(selectionDragBoxReducer);
 

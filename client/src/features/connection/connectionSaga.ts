@@ -1,7 +1,6 @@
 import {apply, call, fork, put, select, take, takeEvery} from "redux-saga/effects";
 import {eventChannel} from "redux-saga";
 import {selectUserId, selectUserName} from "../../app/selectors";
-import {updateName} from "../presence/actions"
 import {loginToSocket, updateConnectionStatus} from "./actions"
 import {AnyAction} from "redux"
 
@@ -31,7 +30,7 @@ function createWebSocketChannel(ws: WebSocket) {
 
         ws.onmessage = function (msg) {
             const data = JSON.parse(msg.data)
-            console.log("Message recieved", data)
+            // console.log("Message recieved", data)
             emit(data)
         }
 
@@ -60,7 +59,7 @@ function createWebSocketChannel(ws: WebSocket) {
 
 function* watchConnectionStatus(socket: WebSocket) {
     yield takeEvery<string, any>(updateConnectionStatus.type, function* (socket: WebSocket, action: any) {
-        if(action.payload) {
+        if (action.payload) {
             const id       = yield select(selectUserId)
             const userName = yield select(selectUserName)
             const message  = JSON.stringify(loginToSocket({clientInstanceId: id, userName}))
@@ -70,11 +69,11 @@ function* watchConnectionStatus(socket: WebSocket) {
 }
 
 function* watchForEvents(socket: WebSocket) {
-    const id       = yield select(selectUserId)
+    const id = yield select(selectUserId)
     yield takeEvery<AnyAction, any>(
         (action: any) => action.meta && (action.meta.transient || action.meta.persistent),
         function* (socket: WebSocket, action: AnyAction) {
-            if(action.meta.clientInstanceId !== id) {
+            if (action.meta.clientInstanceId !== id) {
                 // console.log("skipping sending as not from me", action)
                 return;
             }

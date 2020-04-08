@@ -9,7 +9,7 @@ import {
 } from "../features/selectionDragBox/actions";
 import {useDrag} from "./useDrag";
 import {addPointToPolyLine, createElement} from "../features/elements/actions";
-import {canvasMouseLeave, canvasMouseMove, changeTool} from "../features/ui/actions";
+import {canvasMouseLeave, canvasMouseMove} from "../features/ui/actions";
 import {Tool} from "../features/ui/uiReducer";
 import {selectionAddItem, selectionSetItem} from "../features/selection/actions";
 import {ElementId} from "../lib/elements";
@@ -93,9 +93,9 @@ function usePenTool(): ToolHandler {
         const id = (Math.random() * 100).toString()
         setPenToolId(id)
         return dispatch(createElement({
-            id: id,
-            type: "polyline",
-            geometry: [pointZoom(getPos(e), zoom)],
+            id:         id,
+            type:       "polyline",
+            geometry:   [pointZoom(getPos(e), zoom)],
             formatting: {stroke: "black"},
         }))
     }, [dispatch, zoom]);
@@ -108,15 +108,14 @@ function usePenTool(): ToolHandler {
 
     const onDragEnd = useCallback((e: MyMouseEvent) => {
         setPenToolId(undefined)
-        dispatch(changeTool(Tool.SelectionTool))
-    }, [dispatch]);
+    }, []);
 
     const onPenToolMouseDown = useDrag({
         onDragStart, onDrag, onDragEnd
     });
     return {
         onCanvasMouseDown: onPenToolMouseDown,
-        onCanvasClick: onCanvasClick,
+        onCanvasClick:     onCanvasClick,
         createElementMouseClick
     }
 }
@@ -157,7 +156,7 @@ export default function useTool(): ToolHandler {
         default:
             return {
                 onCanvasMouseDown: undefined,
-                onCanvasClick: undefined,
+                onCanvasClick:     undefined,
                 onCanvasMouseMove,
                 onCanvasMouseLeave,
                 createElementMouseClick

@@ -1,7 +1,7 @@
 import {createReducer} from "@reduxjs/toolkit";
 import {canvasMouseLeave, canvasMouseMove, canvasZoom, changeTool} from "./actions";
 import {Point} from "../../lib/geometry/point";
-import {getClientInstanceId} from "../../lib/utils"
+import {isMyAction} from "../../lib/utils"
 
 export enum Tool {
     SelectionTool,
@@ -19,22 +19,26 @@ export interface UiState {
 
 
 const initialState: UiState = {
-    zoom: 1,
-    tool: Tool.SelectionTool,
-    ghostMice:            {},
+    zoom:      1,
+    tool:      Tool.SelectionTool,
+    ghostMice: {},
 }
 
 const uiReducer = createReducer(initialState as UiState, builder =>
     builder
         .addCase(canvasMouseMove, (state, action) => {
-            if(action.meta.clientInstanceId === getClientInstanceId()) {
+            if(isMyAction(action)) {
                 state.mouse = action.payload
             } else {
-            state.ghostMice[action.meta.clientInstanceId] = action.payload;
+                state.ghostMice[action.meta.clientInstanceId] = action.payload;
             }
         })
         .addCase(canvasMouseLeave, (state, action) => {
-            state.mouse = undefined
+            if(isMyAction(action)) {
+                state.mouse = undefined
+            } else {
+                delete state.ghostMice[action.meta.clientInstanceId]
+            }
         })
         .addCase(canvasZoom, (state, action) => {
             state.zoom = action.payload
@@ -50,3 +54,15 @@ export function getGhostMice(state: UiState) {
     return state.ghostMice;
 }
 
+export function getMousePosition(state: UiState): Point | undefined {
+    return state.mouse
+}
+
+export function getZoom(state: UiState): number {
+    return state.zoom
+}
+
+
+export function getTool(state: UiState): Tool {
+    return state.tool
+}

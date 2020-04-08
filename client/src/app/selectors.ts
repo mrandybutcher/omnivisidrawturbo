@@ -4,7 +4,6 @@ import {
     selectCanvasState,
     selectConnectionState,
     selectElementsState,
-    selectPresenceState,
     selectSelectionDragBoxState,
     selectSelectionState,
     selectUiState
@@ -17,13 +16,11 @@ import {
     getSelectionTargetBox
 } from "../features/selection/getters";
 import {getAllElementIds, getAllElements, getElementById, getElementsByIds} from "../features/elements/getters";
-import {getDragBox} from "../features/selectionDragBox/getters";
 import {createSelector} from "@reduxjs/toolkit";
-import {getMousePosition, getTool, getZoom} from "../features/ui/getters";
-import {getName, getUserId, getUsers} from "../features/presence/presenceReducer";
 import {getCanvasSize} from "../features/canvas/canvasReducer"
-import {getConnectionStatus} from "../features/connection/connectionReducer"
-import {getGhostMice} from "../features/ui/uiReducer"
+import {getConnectionStatus, getName, getUserId, getUsers} from "../features/connection/connectionReducer"
+import {getGhostMice, getMousePosition, getTool, getZoom} from "../features/ui/uiReducer"
+import {getDragBox, getGhostDragBoxes} from "../features/selectionDragBox/getters"
 
 export function selectAllElementsTransformed(state: RootState): (AnyElement)[] {
     // @TODO probably a more efficient way to do this
@@ -85,6 +82,7 @@ export const selectSelectedElementIdSet = createSelector(selectSelectedElementId
 )
 
 export const selectSelectionDragBox = createSelector(selectSelectionDragBoxState, getDragBox);
+export const selectGhostSelectionDragBoxes = createSelector(selectSelectionDragBoxState, getGhostDragBoxes);
 
 export const selectZoom = createSelector(selectUiState, getZoom)
 export const selectTool = createSelector(selectUiState, getTool)
@@ -94,19 +92,17 @@ export const selectSelectedElementsTransformed = createSelector(
     (selectedElementIdSet, allElements) => allElements.filter(it => selectedElementIdSet.has(it.id))
 )
 
-export const selectUserName         = createSelector(selectPresenceState, getName)
+export const selectUserName         = createSelector(selectConnectionState, getName)
 export const selectConnectionStatus = createSelector(selectConnectionState, getConnectionStatus)
-export const selectUsers            = createSelector(selectPresenceState, getUsers)
-export const selectUserId           = createSelector(selectPresenceState, getUserId)
-export const selectGhostMice = (state: RootState) => {
-    const mice = getGhostMice(selectUiState(state))
-    const users = getUsers(selectPresenceState(state))
-    return Object.keys(mice).map(key => ({
-        point:    mice[key],
-        userName: users?.find(it => it.id === key)?.userName || "ghost" // TODO sort this out
+export const selectUsers            = createSelector(selectConnectionState, getUsers)
+export const selectUserId           = createSelector(selectConnectionState, getUserId)
+export const selectGhostMice        = (state: RootState) => {
+    const mice  = getGhostMice(selectUiState(state))
+    const users = selectUsers(state)
+    return users.map(user => ({
+        point:    mice[user.id],
+        userName: user.userName
     }))
-
-
 }
 // export const selectGhostMice        = createSelector(selectUiState, getGhostMice)
 

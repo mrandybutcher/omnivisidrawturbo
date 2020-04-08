@@ -38,10 +38,10 @@ export default function Toolbar() {
         </span><span> Current Tool: &nbsp;
         <button className={tool === Tool.SelectionTool ? styles.selectedTool : ""}
                 onClick={onSelectionTool}>Selection</button>
-        <button className={tool === Tool.PointTool ? styles.selectedTool : ""} onClick={onPointTool}>Point</button>
+        {/*<button className={tool === Tool.PointTool ? styles.selectedTool : ""} onClick={onPointTool}>Point</button>*/}
         <button className={tool === Tool.PenTool ? styles.selectedTool : ""} onClick={onPenTool}>Pen</button>
-        <button className={tool === Tool.ConnectionTool ? styles.selectedTool : ""}
-                onClick={onConnectionTool}>Connection</button>
+        {/*<button className={tool === Tool.ConnectionTool ? styles.selectedTool : ""}*/}
+        {/*        onClick={onConnectionTool}>Connection</button>*/}
         </span>
     </div>
 }

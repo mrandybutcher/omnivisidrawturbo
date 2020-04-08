@@ -8,16 +8,16 @@ import {getSelectedElementIds, getSelectionDelta, getSelectionStartBox, getSelec
 import {getBoxForElementIds} from "../elements/getters";
 import {scaleElement, translateElement} from "../elements/actions";
 import {batch} from "react-redux";
-import {withLocalPayload} from "../../lib/utils"
+import {withTransientPayload} from "../../lib/utils"
 
-export const _selectionSetItems          = createAction("selection/setItems", withLocalPayload<{ elementIds: ElementIdArray, box: Box }>());
-export const selectionClear              = createAction("selection/clear", withLocalPayload<void>());
-export const selectionTranslateDragStart = createAction("selection/translateDragStart", withLocalPayload<Point>());
-export const selectionTranslateDrag      = createAction("selection/translateDrag", withLocalPayload<Point>());
-export const _selectionTranslateDragEnd  = createAction("selection/translateDragEnd", withLocalPayload<{ elementIds: ElementIdArray, point?: Point }>());
-export const selectionScaleDragStart     = createAction("selection/scaleDragStart", withLocalPayload<{ direction: Direction, point: Point }>());
-export const selectionScaleDrag          = createAction("selection/scaleDrag", withLocalPayload<{ direction: Direction, point: Point }>());
-export const _selectionScaleDragEnd      = createAction("selection/scaleDragEnd", withLocalPayload<{ elementIds: ElementIdArray, startBox?: Box, targetBox?: Box }>());
+export const _selectionSetItems          = createAction("selection/setItems", withTransientPayload<{ elementIds: ElementIdArray, box: Box }>());
+export const selectionClear              = createAction("selection/clear", withTransientPayload<void>());
+export const selectionTranslateDragStart = createAction("selection/translateDragStart", withTransientPayload<Point>());
+export const selectionTranslateDrag      = createAction("selection/translateDrag", withTransientPayload<Point>());
+export const _selectionTranslateDragEnd  = createAction("selection/translateDragEnd", withTransientPayload<{ elementIds: ElementIdArray, point?: Point }>());
+export const selectionScaleDragStart     = createAction("selection/scaleDragStart", withTransientPayload<{ direction: Direction, point: Point }>());
+export const selectionScaleDrag          = createAction("selection/scaleDrag", withTransientPayload<{ direction: Direction, point: Point }>());
+export const _selectionScaleDragEnd      = createAction("selection/scaleDragEnd", withTransientPayload<{ elementIds: ElementIdArray, startBox?: Box, targetBox?: Box }>());
 
 
 export const selectionSetItem = (elementId: ElementId): AppThunk => (dispatch, getState) => {

@@ -6,9 +6,9 @@ import ElementTypesPane from "../elementTypes/ElementTypesPane";
 import ElementListPane from "../elements/ElementListPane";
 import {SelectionPane} from "../selection/SelectionPane";
 import Toolbar from "./Toolbar";
-import Menu from './Menu';
-import PresencePane from "../presence/PresencePane"
+import PresencePane from "../connection/PresencePane"
 import ConnectionPane from "../connection/ConnectionPane"
+
 // import WebRtcPane from "../webrtc/WebRtcPane";
 
 interface ChromeProps {

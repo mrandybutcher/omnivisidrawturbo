@@ -1,4 +1,5 @@
 import {v4} from "uuid"
+import {AnyAction} from "redux"
 
 const adjectives = [
     "Big", "Little", "Super", "Random", "Uber", "Sketchy", "Cheeky"
@@ -43,3 +44,11 @@ export function withPersistentPayload<T>() {
         return {payload: t, meta: {clientInstanceId, persistent: true}}
     }
 }
+
+export function isMyAction(action: AnyAction) : boolean {
+    return action?.meta?.clientInstanceId === getClientInstanceId()
+}
+export function getActionClientInstanceId(action: AnyAction) : string | undefined{
+    return action?.meta?.clientInstanceId
+}
+

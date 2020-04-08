@@ -4,13 +4,13 @@ import {Point} from "../../lib/geometry/point";
 import {ElementIdArray} from "../../lib/elements";
 import {Box} from "../../lib/geometry/box";
 import {getBoxForElementIds, getElementIdsInBox} from "../elements/getters";
-import {getDragBox} from "./getters";
-import {withLocalPayload} from "../../lib/utils"
+import {withTransientPayload} from "../../lib/utils"
+import {getDragBox} from "./getters"
 
 
-export const selectionDragBoxDragStart = createAction("selectionDragBox/dragBoxDragStart", withLocalPayload<Point>());
-export const selectionDragBoxDrag      = createAction("selectionDragBox/dragBoxDrag", withLocalPayload<Point>());
-export const _selectionDragBoxDragEnd  = createAction("selectionDragBox/dragBoxDragEnd", withLocalPayload<{ elementIds: ElementIdArray, box: Box }>());
+export const selectionDragBoxDragStart = createAction("selectionDragBox/dragBoxDragStart", withTransientPayload<Point>());
+export const selectionDragBoxDrag      = createAction("selectionDragBox/dragBoxDrag", withTransientPayload<Point>());
+export const _selectionDragBoxDragEnd  = createAction("selectionDragBox/dragBoxDragEnd", withTransientPayload<{ elementIds: ElementIdArray, box: Box }>());
 export const selectionDragBoxDragEnd   = (point: Point): AppThunk => (dispatch, getState) => {
     const {selectionDragBox, elements} = getState();
     const draggedBox                   = getDragBox(selectionDragBox);

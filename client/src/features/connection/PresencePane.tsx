@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Pane} from "../chrome/Pane";
 import {useDispatch, useSelector} from "react-redux";
 import {selectUserId, selectUserName, selectUsers} from "../../app/selectors";
-import {updateName} from "./actions";
+import {updateName} from "./actions"
 
 export default function PResencePane() {
     const userName              = useSelector(selectUserName)

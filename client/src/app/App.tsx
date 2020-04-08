@@ -6,6 +6,7 @@ import Elements from "../features/elements/Elements";
 import SelectionBox from "../features/selection/SelectionBox";
 import SelectionDragBox from "../features/selectionDragBox/SelectionDragBox";
 import GhostMice from "../features/ui/GhostMice"
+import GhostSelectionDragBoxes from "../features/selectionDragBox/GhostSelectionDragBoxes"
 
 export default function App() {
     return (
@@ -15,6 +16,7 @@ export default function App() {
                 <Elements/>
                 <SelectionBox/>
                 <SelectionDragBox/>
+                <GhostSelectionDragBoxes/>
                 <GhostMice/>
             </Canvas>
         </Chrome>
