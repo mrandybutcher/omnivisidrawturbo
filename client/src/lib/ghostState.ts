@@ -35,3 +35,7 @@ export function createGhostSelector<S, R>(selector: (state: S) => R): (state: Gh
         }))
     }
 }
+
+export function createGhostSelectors<S,R>(selector: (state: S) => R) : [(state: GhostState<S>) => R, (state: GhostState<S>) => {[index: string]: R}] {
+    return [createMySelector(selector), createGhostSelector(selector)]
+}

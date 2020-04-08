@@ -15,8 +15,6 @@ export function generateRandomUserName(): string {
     return adjective + " " + noun;
 }
 
-const isBrowser = typeof window !== "undefined" && typeof window.document !== "undefined"
-
 const clientInstanceId = nanoid()
 
 export function getClientInstanceId(): string {
