@@ -131,7 +131,6 @@ export default function useTool(): ToolHandler {
 
     // These two probably shouldn't be in useTool
     const onCanvasMouseMove = useCallback((e: MyMouseEvent) => {
-        console.log("sending mouse move")
         dispatch(canvasMouseMove(pointZoom(getPos(e), zoom)));
     }, [dispatch, zoom]);
 

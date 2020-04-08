@@ -1,5 +1,5 @@
-import {v4} from "uuid"
 import {AnyAction} from "redux"
+import {nanoid} from "@reduxjs/toolkit"
 
 const adjectives = [
     "Big", "Little", "Super", "Random", "Uber", "Sketchy", "Cheeky"
@@ -17,13 +17,7 @@ export function generateRandomUserName(): string {
 
 const isBrowser = typeof window !== "undefined" && typeof window.document !== "undefined"
 
-if (isBrowser) {
-    console.log("running in browser")
-} else {
-    console.log("running on server")
-}
-
-const clientInstanceId = isBrowser ? v4() : "server";
+const clientInstanceId = nanoid()
 
 export function getClientInstanceId(): string {
     return clientInstanceId
@@ -45,10 +39,11 @@ export function withPersistentPayload<T>() {
     }
 }
 
-export function isMyAction(action: AnyAction) : boolean {
+export function isMyAction(action: AnyAction): boolean {
     return action?.meta?.clientInstanceId === getClientInstanceId()
 }
-export function getActionClientInstanceId(action: AnyAction) : string | undefined{
+
+export function getActionClientInstanceId(action: AnyAction): string | undefined {
     return action?.meta?.clientInstanceId
 }
 
