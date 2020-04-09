@@ -15,11 +15,11 @@ export default function App() {
             <Canvas>
                 <BackgroundGrid/>
                 <Elements/>
-                <SelectionBox/>
-                <SelectionDragBox/>
                 <GhostSelectionDragBoxes/>
                 <GhostSelectionBox/>
                 <GhostMice/>
+                <SelectionBox/>
+                <SelectionDragBox/>
             </Canvas>
         </Chrome>
     );
