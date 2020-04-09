@@ -10,12 +10,13 @@ import {
     selectionTranslateDragStart
 } from "./actions";
 import {ElementIdArray} from "../../lib/elements";
-import {Box, boxScaleDirection, boxTranslate} from "../../lib/geometry/box";
-import {Point, pointSubtract} from "../../lib/geometry/point";
+import {Box} from "../../lib/geometry/box";
+import {Point} from "../../lib/geometry/point";
 import {Direction} from "../../lib/direction";
 import {_selectionDragBoxDragEnd} from "../selectionDragBox/actions";
 import {createGhostReducer} from "../../lib/ghostState"
 import {RootState} from "../../app/rootReducer"
+import {getSelectionTargetBox} from "./getters"
 
 
 interface NoSelection {
@@ -138,34 +139,4 @@ const selectionReducer = createReducer(noSelection as SelectionState, builder =>
 
 export default createGhostReducer(selectionReducer);
 
-export function getSelectionTargetBox(selectionState: SelectionState): Box | undefined {
-    if (selectionState.state === "noselection") {
-        return undefined;
-    }
-    if (selectionState.transform?.type === "translating") {
-        return boxTranslate(selectionState.box, getSelectionDelta(selectionState))
-    }
-    if (selectionState.transform?.type === "scaling") {
-        return boxScaleDirection(selectionState.box, selectionState.transform.direction, getSelectionDelta(selectionState))
-    }
-    return selectionState.box
-}
 
-export function getSelectedElementIds(selectionState: SelectionState): ElementIdArray {
-    if (selectionState.state === "noselection") {
-        return []
-    }
-    return selectionState.selectedElementIds;
-}
-
-export function getSelectionDelta(selectionState: SelectionState): Point | undefined {
-    if (selectionState.state === "noselection") {
-        return undefined
-    }
-    if (selectionState.transform?.type === "translating" || selectionState.transform?.type === "scaling") {
-        return pointSubtract(selectionState.transform.startPoint, selectionState.transform.currentPoint)
-    }
-    return undefined
-}
-
-export const selectSelectionState     = (state: RootState) => state.selection

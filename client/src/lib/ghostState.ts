@@ -31,11 +31,11 @@ export function getGhostState<S>(state: GhostState<S>): { [p: string]: S } {
     return state.ghostState
 }
 
-export function createMySelector<S, R>(selector: (state: S) => R): (state: GhostState<S>) => R {
+export function createMyGetter<S, R>(selector: (state: S) => R): (state: GhostState<S>) => R {
     return (state: GhostState<S>): R => selector(state?.myState as S)
 }
 
-export function createGhostSelector<S, R>(selector: (state: S) => R): (state: GhostState<S>) => { [index: string]: R } {
+export function createGhostGetter<S, R>(selector: (state: S) => R): (state: GhostState<S>) => { [index: string]: R } {
     return (state: GhostState<S>): { [index: string]: R } => {
         return Object.fromEntries(Object.entries(state.ghostState).map(([id, ghostState]) => {
             return [id, selector(ghostState)]
@@ -43,6 +43,6 @@ export function createGhostSelector<S, R>(selector: (state: S) => R): (state: Gh
     }
 }
 
-export function createGhostSelectors<S, R>(selector: (state: S) => R): [(state: GhostState<S>) => R, (state: GhostState<S>) => { [index: string]: R }] {
-    return [createMySelector(selector), createGhostSelector(selector)]
+export function createGhostGetters<S, R>(selector: (state: S) => R): [(state: GhostState<S>) => R, (state: GhostState<S>) => { [index: string]: R }] {
+    return [createMyGetter(selector), createGhostGetter(selector)]
 }

@@ -4,9 +4,9 @@ import {useDispatch, useSelector} from "react-redux";
 import styles from "./ElementListPane.module.scss"
 import {ElementId} from "../../lib/elements";
 import {selectionAddItem, selectionSetItem} from "../selection/actions";
-import {selectSelectedElementIdSet} from "../../app/selectors";
 import {createSelector} from "@reduxjs/toolkit";
 import {selectAllElements} from "./elementsReducer"
+import {selectSelectedElementIdSet} from "../selection/getters"
 
 
 const selectElementListPaneData = createSelector(

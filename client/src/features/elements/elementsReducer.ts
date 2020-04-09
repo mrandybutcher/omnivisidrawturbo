@@ -2,7 +2,6 @@ import {compose, createReducer} from "@reduxjs/toolkit";
 import {
     AnyElement,
     elementBoundingBox,
-    ElementId,
     ElementIdArray,
     elementsBoundingBox,
     elementScale,
@@ -108,23 +107,17 @@ const elementsReducer = createReducer(initialElementsState as ElementsState, bui
 );
 
 export default elementsReducer;
-export const selectElementsState = (state: RootState) => state.elements
 
+export const selectElementsState = (state: RootState) => state.elements
 
 export const getBoxForElementIds = (state: ElementsState, ids: ElementIdArray): Box => elementsBoundingBox(getElementsByIds(state, ids))
 export const getAllElements      = (state: ElementsState): AnyElement[] => state.allElementIds.map(id => state.elements[id])
 export const getElementsByIds    = (state: ElementsState, ids: ElementIdArray): AnyElement[] => ids.map(id => state.elements[id])
-export const getElementById      = (state: ElementsState, id: ElementId): AnyElement | undefined => state.elements[id]
-export const getAllElementIds    = (state: ElementsState): ElementIdArray => state.allElementIds
 export const getElementIdsInBox  = (state: ElementsState, box?: Box): ElementIdArray => {
     if (!box) {
         return []
     }
-    const allElements = getAllElements(state)
-    return allElements.filter(elementBox => isBoxInBox(elementBoundingBox(elementBox), box)).map(element => element.id)
+    return getAllElements(state).filter(elementBox => isBoxInBox(elementBoundingBox(elementBox), box)).map(element => element.id)
 }
 
-// export const selectBoxForElementIds = compose(getBoxForElementIds, selectElementsState)
-export const selectAllElements   = compose(getAllElements, selectElementsState)
-export const selectAllElementIds = compose(getAllElementIds, selectElementsState)
-// export const selectElementsByIds    = compose(getElementsByIds, selectElementsState)
+export const selectAllElements = compose(getAllElements, selectElementsState)

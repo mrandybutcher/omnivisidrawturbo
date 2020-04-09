@@ -1,18 +1,16 @@
 import {AnyElement, elementScale, elementTranslate} from "../lib/elements";
 import {RootState} from "./rootReducer";
-import {Box} from "../lib/geometry/box";
 import {
-    getMySelectedElementIds,
     getMySelectedElementIdSet,
     getMySelectionDelta,
-    getMySelectionTargetBox
+    getMySelectionTargetBox,
+    selectSelectedElementIdSet,
+    selectSelectionState
 } from "../features/selection/getters";
 import {createSelector} from "@reduxjs/toolkit";
-import {getDragBox, getGhostDragBoxes} from "../features/selectionDragBox/getters"
 import {getMyState} from "../lib/ghostState"
-import {SelectionState, selectSelectionState} from "../features/selection/selectionReducer"
+import {SelectionState} from "../features/selection/selectionReducer"
 import {getAllElements, selectElementsState} from "../features/elements/elementsReducer"
-import {selectSelectionDragBoxState} from "../features/selectionDragBox/selectionDragBoxReducer"
 
 export function selectAllElementsTransformed(state: RootState): (AnyElement)[] {
     // @TODO probably a more efficient way to do this
@@ -40,25 +38,6 @@ export function selectAllElementsTransformed(state: RootState): (AnyElement)[] {
         return element
     });
 }
-
-
-export function selectSelectionBox(state: RootState): Box | undefined {
-    const selectionState     = selectSelectionState(state)
-    const selectedElementIds = getMySelectedElementIds(selectionState)
-    if (selectedElementIds.length === 0) {
-        return undefined
-    }
-    return getMySelectionTargetBox(selectionState)
-}
-
-const selectSelectedElementIds = createSelector(selectSelectionState, getMySelectedElementIds)
-
-export const selectSelectedElementIdSet = createSelector(selectSelectedElementIds,
-    (selectedElementIds) => new Set(selectedElementIds)
-)
-
-export const selectSelectionDragBox        = createSelector(selectSelectionDragBoxState, getDragBox);
-export const selectGhostSelectionDragBoxes = createSelector(selectSelectionDragBoxState, getGhostDragBoxes);
 
 
 export const selectSelectedElementsTransformed = createSelector(

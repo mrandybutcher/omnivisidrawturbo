@@ -1,40 +1,37 @@
 import React from "react";
-import DragHandle from "./DragHandle";
 import {useSelector} from "react-redux";
-import {directionDragHandlesForRect} from "../../lib/direction";
-import {Point} from "../../lib/geometry/point";
 import {rectFromBox} from "../../lib/geometry/rect";
-import {selectSelectionBox } from "../../app/selectors";
-import {selectZoom} from "../ui/uiReducer"
+import {selectGhostSelectionBox} from "./getters"
+import {createSelector} from "@reduxjs/toolkit"
+import {selectUsers} from "../connection/connectionReducer"
 
-function getPos(e: MouseEvent | React.MouseEvent<Element>): Point {
-    return {
-        x: e.pageX,
-        y: e.pageY,
-    }
-}
+export const selectGhostSelectionBoxes = createSelector(selectGhostSelectionBox, selectUsers,
+    (boxes, users) =>
+        users.map(user => ({
+            box:      boxes[user.id],
+            userName: user.userName
+        })))
 
 export default function GhostSelectionBox() {
-    const selectionBox = useSelector(selectSelectionBox);
-    const zoom         = useSelector(selectZoom)
+    const selectionBoxes = useSelector(selectGhostSelectionBoxes);
 
-
-    // return <>{Object.entries(selectionBox).map((it, idx) =>
-    const rect         = selectionBox ? rectFromBox(selectionBox) : undefined;
-    if (!rect) {
-        return null;
-    }
-    const dragHandleElements = directionDragHandlesForRect(rect, 8).map((handle) => {
-        return <DragHandle key={handle.direction} handle={handle}/>
-    });
-
-    return (
-        <>
-            <rect fillOpacity="0" stroke="blue" x={rect.x} y={rect.y} width={rect.width} height={rect.height}
-                  cursor="move"
-                  strokeDasharray="5"/>
-        </>
-    );
+    return <>{
+        selectionBoxes
+            .map((it, idx) => {
+                const rect = it.box ? rectFromBox(it.box) : undefined;
+                if (!rect) {
+                    return null;
+                }
+                return (
+                    <>
+                        <text x={rect.x} y={rect.y} dy="-2">{it.userName}</text>
+                        <rect fillOpacity="0" stroke="pink" x={rect.x} y={rect.y} width={rect.width}
+                              height={rect.height}
+                              strokeDasharray="5"/>
+                    </>
+                );
+            })
+        }</>
 
 }
 

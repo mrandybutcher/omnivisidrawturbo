@@ -1,17 +1,16 @@
 import React from "react"
 import {useSelector} from "react-redux";
-import {RootState} from "../../app/rootReducer"
 import {selectUsers} from "../connection/connectionReducer"
-import {selectMouseGhostState} from "./pointerReducer"
+import {selectMouseGhostPositions} from "./pointerReducer"
+import {createSelector} from "@reduxjs/toolkit"
 
-export const selectGhostMice = (state: RootState) => {
-    const ghostMice = selectMouseGhostState(state)
-    const users     = selectUsers(state)
-    return users.map(user => ({
-        point:    ghostMice[user.id]?.mouse || undefined,
-        userName: user.userName
-    }))
-}
+
+export const selectGhostMice = createSelector(selectMouseGhostPositions, selectUsers,
+    (ghostMice, users) =>
+        users.map(user => ({
+            point:    ghostMice[user.id],
+            userName: user.userName
+        })))
 
 export default function GhostMice() {
     const ghostMice = useSelector(selectGhostMice)

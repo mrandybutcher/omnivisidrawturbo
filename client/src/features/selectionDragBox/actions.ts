@@ -4,8 +4,8 @@ import {Point} from "../../lib/geometry/point";
 import {ElementIdArray} from "../../lib/elements";
 import {Box} from "../../lib/geometry/box";
 import {withTransientPayload} from "../../lib/utils"
-import {getDragBox} from "./getters"
 import {getBoxForElementIds, getElementIdsInBox} from "../elements/elementsReducer"
+import {getDragBox} from "./getters"
 
 
 export const selectionDragBoxDragStart = createAction("selectionDragBox/dragBoxDragStart", withTransientPayload<Point>());

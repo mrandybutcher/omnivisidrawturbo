@@ -1,11 +1,12 @@
 import React from "react"
 import {Pane} from "../chrome/Pane";
 import {useSelector} from "react-redux";
-import {selectSelectionBox, selectSelectionDragBox} from "../../app/selectors";
 import {RootState} from "../../app/rootReducer";
 import {SubPane} from "../chrome/SubPane";
 import {getMyState} from "../../lib/ghostState"
 import {SelectionState} from "./selectionReducer"
+import {selectSelectionBox} from "./getters"
+import {selectSelectionDragBox} from "../selectionDragBox/getters"
 
 function selectSelectionTransform(state: RootState) {
     const myState: SelectionState = getMyState(state.selection)

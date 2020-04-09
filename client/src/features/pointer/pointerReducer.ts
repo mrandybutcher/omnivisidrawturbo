@@ -2,7 +2,7 @@ import {createReducer} from "@reduxjs/toolkit";
 import {canvasMouseLeave, canvasMouseMove} from "./actions";
 import {Point} from "../../lib/geometry/point";
 import {RootState} from "../../app/rootReducer"
-import {createGhostReducer, getGhostState, getMyState} from "../../lib/ghostState"
+import {createGhostGetter, createGhostReducer, getMyState} from "../../lib/ghostState"
 
 
 export interface PointerState {
@@ -26,7 +26,8 @@ export default createGhostReducer(pointerReducer);
 
 export const selectPointerState = (state: RootState) => state.pointer
 
-const getMousePosition = (state: PointerState): Point | undefined => state.mouse
+const getMousePosition      = (state: PointerState): Point | undefined => state.mouse
+const getGhostMicePositions = createGhostGetter(getMousePosition)
 
-export const selectMousePosition   = (state: RootState) => getMousePosition(getMyState(selectPointerState(state)))
-export const selectMouseGhostState = (state: RootState) => getGhostState<PointerState>(selectPointerState(state))
+export const selectMousePosition       = (state: RootState) => getMousePosition(getMyState(selectPointerState(state)))
+export const selectMouseGhostPositions = (state: RootState) => getGhostMicePositions(selectPointerState(state))
