@@ -1,8 +1,8 @@
 import {apply, call, fork, put, select, take, takeEvery} from "redux-saga/effects";
 import {eventChannel} from "redux-saga";
-import {selectUserId, selectUserName} from "../../app/selectors";
-import {loginToSocket, updateConnectionStatus} from "./actions"
 import {AnyAction} from "redux"
+import {loginToSocket, updateConnectionStatus} from "./actions"
+import {selectUserId, selectUserName} from "./connectionReducer"
 
 function createWebSocketConnection(): WebSocket {
     const url = process.env.REACT_APP_WS_SERVER;

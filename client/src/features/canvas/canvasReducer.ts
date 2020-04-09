@@ -1,4 +1,5 @@
-import {createReducer} from "@reduxjs/toolkit";
+import {compose, createReducer} from "@reduxjs/toolkit";
+import {RootState} from "../../app/rootReducer"
 
 
 interface FixedCanvas {
@@ -30,7 +31,9 @@ const canvasReducer = createReducer(initialState as CanvasState, builder =>
 
 export default canvasReducer;
 
-export function getCanvasSize(state: CanvasState): { width: 100; height: 100 } | { width: number; height: number } {
+const selectCanvasState = (state: RootState) => state.canvas
+
+function getCanvasSize(state: CanvasState): { width: 100; height: 100 } | { width: number; height: number } {
     if (state.canvasType.type === "fixed") {
         return {
             width:  state.canvasType.width,
@@ -43,3 +46,5 @@ export function getCanvasSize(state: CanvasState): { width: 100; height: 100 } |
         }
     }
 }
+
+export const selectCanvasSize = compose(getCanvasSize, selectCanvasState)

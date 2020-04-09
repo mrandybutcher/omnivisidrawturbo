@@ -1,8 +1,7 @@
 import React, {useCallback} from "react"
 import {useDispatch, useSelector} from "react-redux";
-import {selectTool, selectZoom} from "../../app/selectors";
 import styles from "./Toolbar.module.scss"
-import {Tool} from "../ui/uiReducer";
+import {selectTool, selectZoom, Tool} from "../ui/uiReducer";
 import {canvasZoom, changeTool} from "../ui/actions";
 
 export default function Toolbar() {

@@ -1,7 +1,7 @@
 import React from "react";
 import {Pane} from "../chrome/Pane";
 import {useSelector} from "react-redux";
-import {selectConnectionStatus} from "../../app/selectors";
+import {selectConnectionStatus} from "./connectionReducer"
 
 export default function ConnectionPane() {
     const status = useSelector(selectConnectionStatus)

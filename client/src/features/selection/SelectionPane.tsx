@@ -4,10 +4,13 @@ import {useSelector} from "react-redux";
 import {selectSelectionBox, selectSelectionDragBox} from "../../app/selectors";
 import {RootState} from "../../app/rootReducer";
 import {SubPane} from "../chrome/SubPane";
+import {getMyState} from "../../lib/ghostState"
+import {SelectionState} from "./selectionReducer"
 
 function selectSelectionTransform(state: RootState) {
-    if (state.selection.state === "selected") {
-        return state.selection.transform
+    const myState: SelectionState = getMyState(state.selection)
+    if (myState.state === "selected") {
+        return myState.transform
     } else {
         return undefined
     }

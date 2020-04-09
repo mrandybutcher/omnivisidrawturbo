@@ -1,7 +1,6 @@
-import {createReducer} from "@reduxjs/toolkit";
-import {canvasMouseLeave, canvasMouseMove, canvasZoom, changeTool} from "./actions";
-import {Point} from "../../lib/geometry/point";
-import {isMyAction} from "../../lib/utils"
+import {compose, createReducer} from "@reduxjs/toolkit";
+import {canvasZoom, changeTool} from "./actions";
+import {RootState} from "../../app/rootReducer"
 
 export enum Tool {
     SelectionTool,
@@ -11,35 +10,18 @@ export enum Tool {
 }
 
 export interface UiState {
-    readonly mouse?: Point
     readonly zoom: number
     readonly tool: Tool
-    readonly ghostMice: { [index: string]: Point }
 }
 
 
 const initialState: UiState = {
-    zoom:      1,
-    tool:      Tool.SelectionTool,
-    ghostMice: {},
+    zoom: 1,
+    tool: Tool.SelectionTool,
 }
 
 const uiReducer = createReducer(initialState as UiState, builder =>
     builder
-        .addCase(canvasMouseMove, (state, action) => {
-            if(isMyAction(action)) {
-                state.mouse = action.payload
-            } else {
-                state.ghostMice[action.meta.clientInstanceId] = action.payload;
-            }
-        })
-        .addCase(canvasMouseLeave, (state, action) => {
-            if(isMyAction(action)) {
-                state.mouse = undefined
-            } else {
-                delete state.ghostMice[action.meta.clientInstanceId]
-            }
-        })
         .addCase(canvasZoom, (state, action) => {
             state.zoom = action.payload
         })
@@ -50,19 +32,11 @@ const uiReducer = createReducer(initialState as UiState, builder =>
 
 export default uiReducer;
 
-export function getGhostMice(state: UiState) {
-    return state.ghostMice;
-}
+export const selectUiState = (state: RootState) => state.ui
 
-export function getMousePosition(state: UiState): Point | undefined {
-    return state.mouse
-}
-
-export function getZoom(state: UiState): number {
-    return state.zoom
-}
+const getZoom = (state: UiState): number => state.zoom
+const getTool = (state: UiState): Tool => state.tool
 
 
-export function getTool(state: UiState): Tool {
-    return state.tool
-}
+export const selectZoom = compose(getZoom, selectUiState)
+export const selectTool = compose(getTool, selectUiState)

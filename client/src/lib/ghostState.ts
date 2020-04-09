@@ -2,7 +2,7 @@ import {getActionClientInstanceId, isMyAction} from "./utils"
 import {AnyAction} from "redux"
 import {createNextState} from "@reduxjs/toolkit"
 
-interface GhostState<S> {
+export interface GhostState<S> {
     readonly myState: S
     readonly ghostState: { [index: string]: S }
 }
@@ -11,10 +11,10 @@ interface GhostState<S> {
 export function createGhostReducer<S, A extends AnyAction>(reducer: (state: S | undefined, action: A) => S): (state: GhostState<S>, action: A) => GhostState<S> {
     return createNextState((state, action) => {
         const actionClientInstanceId = getActionClientInstanceId(action)
-        if(state === undefined) {
+        if (state === undefined) {
             return {
                 myState:    reducer(undefined, action),
-                ghostState:  {}
+                ghostState: {}
             }
         } else if (isMyAction(action) || !actionClientInstanceId) {
             state.myState = reducer(state.myState, action)
@@ -22,6 +22,13 @@ export function createGhostReducer<S, A extends AnyAction>(reducer: (state: S | 
             state.ghostState[actionClientInstanceId] = reducer(state.ghostState[actionClientInstanceId], action)
         }
     })
+}
+
+export function getMyState<S>(state: GhostState<S>): S {
+    return state.myState
+}
+export function getGhostState<S>(state: GhostState<S>): { [p: string]: S } {
+    return state.ghostState
 }
 
 export function createMySelector<S, R>(selector: (state: S) => R): (state: GhostState<S>) => R {
@@ -36,6 +43,6 @@ export function createGhostSelector<S, R>(selector: (state: S) => R): (state: Gh
     }
 }
 
-export function createGhostSelectors<S,R>(selector: (state: S) => R) : [(state: GhostState<S>) => R, (state: GhostState<S>) => {[index: string]: R}] {
+export function createGhostSelectors<S, R>(selector: (state: S) => R): [(state: GhostState<S>) => R, (state: GhostState<S>) => { [index: string]: R }] {
     return [createMySelector(selector), createGhostSelector(selector)]
 }

@@ -3,9 +3,9 @@ import {AppThunk} from "../../app/store";
 import {Point} from "../../lib/geometry/point";
 import {ElementIdArray} from "../../lib/elements";
 import {Box} from "../../lib/geometry/box";
-import {getBoxForElementIds, getElementIdsInBox} from "../elements/getters";
 import {withTransientPayload} from "../../lib/utils"
 import {getDragBox} from "./getters"
+import {getBoxForElementIds, getElementIdsInBox} from "../elements/elementsReducer"
 
 
 export const selectionDragBoxDragStart = createAction("selectionDragBox/dragBoxDragStart", withTransientPayload<Point>());

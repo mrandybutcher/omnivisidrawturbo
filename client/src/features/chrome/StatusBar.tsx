@@ -1,7 +1,8 @@
 import React from "react";
 import style from "./StatusBar.module.scss"
 import {useSelector} from "react-redux";
-import {selectMousePosition, selectSelectionBox} from "../../app/selectors";
+import {selectSelectionBox} from "../../app/selectors";
+import {selectMousePosition} from "../pointer/pointerReducer"
 
 
 export default function StatusBar() {

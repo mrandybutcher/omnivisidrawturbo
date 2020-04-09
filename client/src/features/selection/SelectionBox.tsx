@@ -6,7 +6,8 @@ import {selectionTranslateDrag, selectionTranslateDragEnd, selectionTranslateDra
 import {directionDragHandlesForRect} from "../../lib/direction";
 import {Point, pointZoom} from "../../lib/geometry/point";
 import {rectFromBox} from "../../lib/geometry/rect";
-import {selectSelectionBox, selectZoom} from "../../app/selectors";
+import {selectSelectionBox} from "../../app/selectors";
+import {selectZoom} from "../ui/uiReducer"
 
 function getPos(e: MouseEvent | React.MouseEvent<Element>): Point {
     return {

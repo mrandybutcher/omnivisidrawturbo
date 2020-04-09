@@ -24,7 +24,7 @@ function updateUsers(wss) {
     sendToAll(wss, {
         type: "presence/updateUsers",
         payload: loggedInUsers
-    })
+    }
 }
 
 function handleRequest(request, ws, wss) {

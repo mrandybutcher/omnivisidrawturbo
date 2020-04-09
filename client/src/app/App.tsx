@@ -5,8 +5,9 @@ import BackgroundGrid from "../features/canvas/BackgroundGrid";
 import Elements from "../features/elements/Elements";
 import SelectionBox from "../features/selection/SelectionBox";
 import SelectionDragBox from "../features/selectionDragBox/SelectionDragBox";
-import GhostMice from "../features/ui/GhostMice"
+import GhostMice from "../features/pointer/GhostMice"
 import GhostSelectionDragBoxes from "../features/selectionDragBox/GhostSelectionDragBoxes"
+import GhostSelectionBox from "../features/selection/GhostSelectionBox"
 
 export default function App() {
     return (
@@ -17,6 +18,7 @@ export default function App() {
                 <SelectionBox/>
                 <SelectionDragBox/>
                 <GhostSelectionDragBoxes/>
+                <GhostSelectionBox/>
                 <GhostMice/>
             </Canvas>
         </Chrome>

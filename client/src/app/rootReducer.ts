@@ -5,6 +5,7 @@ import canvasReducer from "../features/canvas/canvasReducer";
 import uiReducer from "../features/ui/uiReducer"
 import {combineReducers} from "redux";
 import connectionReducer from "../features/connection/connectionReducer"
+import pointerReducer from "../features/pointer/pointerReducer"
 
 const rootReducer = combineReducers({
     canvas:           canvasReducer,
@@ -12,15 +13,10 @@ const rootReducer = combineReducers({
     selection:        selectionReducer,
     selectionDragBox: selectionDragBoxReducer,
     ui:               uiReducer,
-    connection:       connectionReducer
+    connection:       connectionReducer,
+    pointer:          pointerReducer
 });
 
 export default rootReducer
 export type RootState = ReturnType<typeof rootReducer>
 
-export const selectCanvasState           = (state: RootState) => state.canvas
-export const selectElementsState         = (state: RootState) => state.elements
-export const selectSelectionState        = (state: RootState) => state.selection
-export const selectSelectionDragBoxState = (state: RootState) => state.selectionDragBox
-export const selectUiState               = (state: RootState) => state.ui
-export const selectConnectionState       = (state: RootState) => state.connection

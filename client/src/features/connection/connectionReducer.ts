@@ -1,6 +1,7 @@
-import {createReducer} from "@reduxjs/toolkit"
+import {compose, createReducer} from "@reduxjs/toolkit"
 import {updateConnectionStatus, updateName, updateUsersPresent} from "./actions"
 import {generateRandomUserName, getClientInstanceId} from "../../lib/utils"
+import {RootState} from "../../app/rootReducer"
 
 interface ConnectionState {
     readonly connected: boolean
@@ -35,19 +36,16 @@ const connectionReducer = createReducer(initialConnectionState, builder =>
 );
 
 export default connectionReducer;
+export const selectConnectionState = (state: RootState) => state.connection
 
-export function getConnectionStatus(state: ConnectionState) {
-    return state.connected
-}
 
-export function getName(state: ConnectionState) {
-    return state.name
-}
+const getConnectionStatus = (state: ConnectionState) => state.connected
+const getName             = (state: ConnectionState) => state.name
+const getUsers            = (state: ConnectionState) => state.users
+const getUserId           = (state: ConnectionState) => state.id
 
-export function getUsers(state: ConnectionState) {
-    return state.users
-}
+export const selectConnectionStatus = compose(getConnectionStatus, selectConnectionState)
+export const selectUserName         = compose(getName, selectConnectionState)
+export const selectUsers            = compose(getUsers, selectConnectionState)
+export const selectUserId           = compose(getUserId, selectConnectionState)
 
-export function getUserId(state: ConnectionState) {
-    return state.id
-}

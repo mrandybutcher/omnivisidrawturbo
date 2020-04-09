@@ -1,7 +1,6 @@
 import React, {useCallback, useState} from "react";
 import {Point, pointZoom} from "../lib/geometry/point";
 import {useDispatch, useSelector} from "react-redux";
-import {selectTool, selectZoom} from "../app/selectors";
 import {
     selectionDragBoxDrag,
     selectionDragBoxDragEnd,
@@ -9,10 +8,10 @@ import {
 } from "../features/selectionDragBox/actions";
 import {useDrag} from "./useDrag";
 import {addPointToPolyLine, createElement} from "../features/elements/actions";
-import {canvasMouseLeave, canvasMouseMove} from "../features/ui/actions";
-import {Tool} from "../features/ui/uiReducer";
+import {selectTool, selectZoom, Tool} from "../features/ui/uiReducer";
 import {selectionAddItem, selectionSetItem} from "../features/selection/actions";
 import {ElementId} from "../lib/elements";
+import {canvasMouseLeave, canvasMouseMove} from "../features/pointer/actions"
 
 function getPos(e: MouseEvent | React.MouseEvent<Element>): Point {
     return {

@@ -26,6 +26,8 @@
 * [x] Prevent all elements re-rendering when one is moved
 * [x] Replace random id generation with proper uuid's
 * [x] Convert to use yarn workspaces
+* [ ] Use immer better in selectionReducer 
+* [ ] Use immer better in selectionDragBoxReducer 
 * [ ] Stop mouse position going funky over text
 * [ ] Combine selection scale/transform to single transform that is all box based
 * [ ] Write some Tests

@@ -5,7 +5,7 @@ import {selectionScaleDrag, selectionScaleDragEnd, selectionScaleDragStart} from
 import {useDispatch, useSelector} from "react-redux";
 import {Point, pointZoom} from "../../lib/geometry/point";
 import {Rect} from "../../lib/geometry/rect";
-import {selectZoom} from "../../app/selectors";
+import {selectZoom} from "../ui/uiReducer"
 
 function getPos(e: MouseEvent | React.MouseEvent<Element>): Point {
     return {

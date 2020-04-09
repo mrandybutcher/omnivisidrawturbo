@@ -4,11 +4,11 @@ import {AppThunk} from "../../app/store";
 import {Direction} from "../../lib/direction";
 import {Point} from "../../lib/geometry/point";
 import {Box} from "../../lib/geometry/box";
-import {getSelectedElementIds, getSelectionDelta, getSelectionStartBox, getSelectionTargetBox} from "./getters";
-import {getBoxForElementIds} from "../elements/getters";
+import {getMySelectedElementIds, getMySelectionDelta, getMySelectionStartBox, getMySelectionTargetBox} from "./getters";
 import {scaleElement, translateElement} from "../elements/actions";
 import {batch} from "react-redux";
 import {withTransientPayload} from "../../lib/utils"
+import {getBoxForElementIds} from "../elements/elementsReducer"
 
 export const _selectionSetItems          = createAction("selection/setItems", withTransientPayload<{ elementIds: ElementIdArray, box: Box }>());
 export const selectionClear              = createAction("selection/clear", withTransientPayload<void>());
@@ -30,7 +30,7 @@ export const selectionSetItem = (elementId: ElementId): AppThunk => (dispatch, g
 
 export const selectionAddItem = (elementId: ElementId): AppThunk => (dispatch, getState) => {
     const {selection, elements} = getState();
-    const selectedIds           = getSelectedElementIds(selection)
+    const selectedIds           = getMySelectedElementIds(selection)
     const elementIds            = [...selectedIds, elementId]
     const box                   = getBoxForElementIds(elements, elementIds)
 
@@ -40,8 +40,8 @@ export const selectionAddItem = (elementId: ElementId): AppThunk => (dispatch, g
 
 export const selectionTranslateDragEnd = (): AppThunk => (dispatch, getState) => {
     const {selection} = getState();
-    const point       = getSelectionDelta(selection);
-    const elementIds  = getSelectedElementIds(selection)
+    const point       = getMySelectionDelta(selection);
+    const elementIds  = getMySelectedElementIds(selection)
 
     batch(() => {
         dispatch(_selectionTranslateDragEnd({elementIds, point}))
@@ -51,9 +51,9 @@ export const selectionTranslateDragEnd = (): AppThunk => (dispatch, getState) =>
 
 export const selectionScaleDragEnd = (payload: { direction: Direction, point: Point }): AppThunk => (dispatch, getState) => {
     const {selection} = getState();
-    const startBox    = getSelectionStartBox(selection)
-    const targetBox   = getSelectionTargetBox(selection)
-    const elementIds  = getSelectedElementIds(selection)
+    const startBox    = getMySelectionStartBox(selection)
+    const targetBox   = getMySelectionTargetBox(selection)
+    const elementIds  = getMySelectedElementIds(selection)
 
     batch(() => {
         dispatch(_selectionScaleDragEnd({elementIds, startBox, targetBox}))
