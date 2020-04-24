@@ -1,12 +1,12 @@
 const WebSocket = require("ws")
 
 function sendTo(connection, action) {
-    console.log("send to one", action)
+    // console.log("send to one", action)
     connection.send(JSON.stringify(action));
 }
 
 function sendToOthers(wss, ws, action) {
-    console.log("send to all other clients", action)
+    console.log("send to other clients", action)
     wss.clients.forEach(function eachClient(client) {
         // console.log("sending")
         if (client !== ws && client.readyState === WebSocket.OPEN) {
@@ -24,7 +24,8 @@ function sendToAll(wss, action) {
             // console.log("and open")
             client.send(JSON.stringify(action))
         } else {
-            console.log("sending to closed socket", client)
+            // not sure if this happens
+            console.log("ERROR sending to closed socket", client)
         }
     })
 }

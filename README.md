@@ -1,17 +1,18 @@
 # See the ALPHA version
 * https://r3b.dev/
 # Getting Started Developing
-* Install [React Dev Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
-* Install [Redux Dev Tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
-* In redux dev tools settings -> Filter Actions in DevTools -> Hide the following "ui/mouseMove"
-* Run ```yarn install```
+* (Optional) Install [React Dev Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
+* (Optional) Install [Redux Dev Tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
+* (Optional) In redux dev tools settings -> Filter Actions in DevTools -> Hide the following "ui/mouseMove" this filters out some of the noise
 
-## Build the shared libs when they change
-* Run ```yarn build:watch:shared```
-## Run Client in Dev Mode
-* Run ```yarn start:client```
-## Run Server (only necessary for collab)
-* Run ```yarn start:server```
+## In the Server directory
+* Run ```yarn install```
+* Run ```yarn start```
+
+## In the Client directory
+* Run ```yarn install```
+* Run ```yarn start```
+
 
 ## Help
 * Send pull requests or raise tickets for bugs/features
@@ -19,13 +20,6 @@
 * Ask before introducing more dependencies
 
 # Tech Debt
-* [x] Refactor the Selection/Pen tool stuff out Canvas
-* [x] Sort out all the floating-point geometry
-* [x] Stop Canvas re-rendering so much (useCallback wrap param passed to useDrag?)
-* [x] Move the colours into a SCSS file
-* [x] Prevent all elements re-rendering when one is moved
-* [x] Replace random id generation with proper uuid's
-* [x] Convert to use yarn workspaces
 * [ ] Use immer better in selectionReducer 
 * [ ] Use immer better in selectionDragBoxReducer 
 * [ ] Stop mouse position going funky over text
@@ -174,10 +168,10 @@
 * [ ] Configurable connection Endings
 
 ## Undo and Redo
-* [ ] Action Stack
+* [ ] History Stack
 * [ ] Undo action
 * [ ] Redo action
-* [ ] Action Pane
+* [ ] History Pane
 
 ## Version History
 * [ ] Show version history
@@ -201,13 +195,12 @@
 
 
 ## Collaboration
-* [ ] Propagate mouse position
-* [ ] Propagate element changes
-* [ ] Propagate selections
-* [ ] Propagate selection translate/scale
+* [x] Propagate mouse position
+* [x] Propagate element changes
+* [x] Propagate selections
+* [x] Propagate selection translate/scale
+* [ ] Incorporate ghost transform into current view
 * [ ] Locking of selected elements?
-* [ ] Webcam streaming of collaborators
-* [ ] P2P collaboration
 
 # Common
 * [ ] Authentication

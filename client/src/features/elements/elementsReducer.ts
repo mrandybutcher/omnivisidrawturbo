@@ -11,6 +11,7 @@ import {addPointToPolyLine, createElement, scaleElement, translateElement, updat
 import {pointEquals} from "../../lib/geometry/point";
 import {RootState} from "../../app/rootReducer"
 import {Box, isBoxInBox} from "../../lib/geometry/box"
+import {isPersisted} from "../../lib/utils"
 
 export interface ElementsState {
     readonly elements: { [index: string]: AnyElement },
@@ -64,6 +65,9 @@ const initialElementsState: ElementsState = {
 const elementsReducer = createReducer(initialElementsState as ElementsState, builder =>
     builder
         .addCase(translateElement, (state, action) => {
+            if(!isPersisted(action)) {
+                return;
+            }
             const {elementIds, point} = action.payload;
 
             elementIds.forEach(elementId => {
@@ -75,6 +79,9 @@ const elementsReducer = createReducer(initialElementsState as ElementsState, bui
 
         })
         .addCase(scaleElement, (state, action) => {
+            if(!isPersisted(action)) {
+                return;
+            }
             const {elementIds, startBox, targetBox} = action.payload;
 
             elementIds.forEach(elementId => {
@@ -85,11 +92,17 @@ const elementsReducer = createReducer(initialElementsState as ElementsState, bui
             });
         })
         .addCase(createElement, (state, action) => {
+            if(!isPersisted(action)) {
+                return;
+            }
             const newElement              = action.payload
             state.elements[newElement.id] = newElement
             state.allElementIds.push(newElement.id)
         })
         .addCase(addPointToPolyLine, (state, action) => {
+            if(!isPersisted(action)) {
+                return;
+            }
             const {elementId, point} = action.payload
             const polyLine           = state.elements[elementId]
             if (polyLine && polyLine.type === "polyline") {
@@ -100,6 +113,9 @@ const elementsReducer = createReducer(initialElementsState as ElementsState, bui
 
         })
         .addCase(updateElementGeometry, (state, action) => {
+            if(!isPersisted(action)) {
+                return;
+            }
             let element                               = state.elements[action.payload.id];
             // @ts-ignore
             element.geometry[action.payload.property] = action.payload.value;

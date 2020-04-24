@@ -33,12 +33,16 @@ export function withTransientPayload<T>() {
 
 export function withPersistentPayload<T>() {
     return (t: T) => {
-        return {payload: t, meta: {clientInstanceId, persistent: true}}
+        return {payload: t, meta: {clientInstanceId, userName: undefined, persistent: true}}
     }
 }
 
 export function isMyAction(action: AnyAction): boolean {
     return action?.meta?.clientInstanceId === getClientInstanceId()
+}
+
+export function isPersisted(action: AnyAction): boolean {
+    return action?.meta?.sequenceNumber !== undefined
 }
 
 export function getActionClientInstanceId(action: AnyAction): string | undefined {

@@ -1,8 +1,7 @@
 import {apply, call, fork, put, select, take, takeEvery} from "redux-saga/effects";
 import {eventChannel} from "redux-saga";
 import {AnyAction} from "redux"
-import {loginToSocket, updateConnectionStatus} from "./actions"
-import {selectUserId, selectUserName} from "./connectionReducer"
+import {loginToSocket, selectUserId, selectUserName, updateConnectionStatus} from "./connectionReducer"
 
 function createWebSocketConnection(): WebSocket {
     const url = process.env.REACT_APP_WS_SERVER;
@@ -75,6 +74,10 @@ function* watchForEvents(socket: WebSocket) {
         function* (socket: WebSocket, action: AnyAction) {
             if (action.meta.clientInstanceId !== id) {
                 // console.log("skipping sending as not from me", action)
+                return;
+            }
+            if (action.meta.sequenceNumber !== undefined) {
+                // console.log("skipping as already persisted")
                 return;
             }
             // console.log("action", action)

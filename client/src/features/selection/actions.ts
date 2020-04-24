@@ -43,10 +43,10 @@ export const selectionTranslateDragEnd = (): AppThunk => (dispatch, getState) =>
     const point       = getMySelectionDelta(selection);
     const elementIds  = getMySelectedElementIds(selection)
 
-    batch(() => {
-        dispatch(_selectionTranslateDragEnd({elementIds, point}))
-        dispatch(translateElement({elementIds, point}))
-    })
+    // batch(() => {
+    dispatch(translateElement({elementIds, point}))
+    dispatch(_selectionTranslateDragEnd({elementIds, point}))
+    // })
 }
 
 export const selectionScaleDragEnd = (payload: { direction: Direction, point: Point }): AppThunk => (dispatch, getState) => {

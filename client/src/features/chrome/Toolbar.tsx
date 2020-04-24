@@ -42,5 +42,6 @@ export default function Toolbar() {
         {/*<button className={tool === Tool.ConnectionTool ? styles.selectedTool : ""}*/}
         {/*        onClick={onConnectionTool}>Connection</button>*/}
         </span>
+        <span style={{float: "right"}}><a target="_new" href="https://github.com/steveme/omnivisidrawturbo">On Github</a></span>
     </div>
 }

@@ -1,6 +1,11 @@
-import {compose, createReducer} from "@reduxjs/toolkit"
-import {updateConnectionStatus, updateName, updateUsersPresent} from "./actions"
-import {generateRandomUserName, getClientInstanceId} from "../../lib/utils"
+import {compose, createAction, createReducer} from "@reduxjs/toolkit"
+import {
+    generateRandomUserName,
+    getClientInstanceId,
+    isMyAction,
+    withLocalPayload,
+    withPersistentPayload
+} from "../../lib/utils"
 import {RootState} from "../../app/rootReducer"
 
 interface ConnectionState {
@@ -22,13 +27,20 @@ const initialConnectionState: ConnectionState = {
     users:     []
 }
 
-const connectionReducer = createReducer(initialConnectionState, builder =>
+export const updateConnectionStatus = createAction("connection/updateConnectionStatus", withLocalPayload<boolean>());
+export const loginToSocket          = createAction("connection/loginToSocket", withPersistentPayload<{ clientInstanceId: string, userName: string }>());
+export const updateName             = createAction("connection/updateName", withPersistentPayload<string>());
+export const updateUsersPresent     = createAction("connection/updateUsers", withPersistentPayload<PresentUser[]>());
+
+const connectionReducer             = createReducer(initialConnectionState, builder =>
     builder
         .addCase(updateConnectionStatus, (state, action) => {
             state.connected = action.payload
         })
         .addCase(updateName, (state, action) => {
-            state.name = action.payload
+            if(isMyAction(action)) {
+                state.name = action.payload
+            }
         })
         .addCase(updateUsersPresent, (state, action) => {
             state.users = action.payload

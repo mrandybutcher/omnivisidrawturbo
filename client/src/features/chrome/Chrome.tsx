@@ -8,6 +8,7 @@ import {SelectionPane} from "../selection/SelectionPane";
 import Toolbar from "./Toolbar";
 import PresencePane from "../connection/PresencePane"
 import ConnectionPane from "../connection/ConnectionPane"
+import HistoryPane from "../history/HistoryPane"
 
 // import WebRtcPane from "../webrtc/WebRtcPane";
 
@@ -36,6 +37,7 @@ export default function Chrome({children}: ChromeProps) {
                 <div className={styles.right}>
                     <SelectionPane/>
                     <ElementPropertiesPane/>
+                    <HistoryPane/>
                 </div>
             </div>
             <div className={styles.footer}><StatusBar/></div>

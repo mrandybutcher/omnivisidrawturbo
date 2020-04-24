@@ -1,9 +1,7 @@
 import {createReducer} from "@reduxjs/toolkit";
-import {Point, pointsToBox} from "../../lib/geometry/point";
+import {Point} from "../../lib/geometry/point";
 import {_selectionDragBoxDragEnd, selectionDragBoxDrag, selectionDragBoxDragStart} from "./actions";
-import {createGhostGetters, createGhostReducer} from "../../lib/ghostState"
-import {RootState} from "../../app/rootReducer"
-import {Box} from "../../lib/geometry/box"
+import {createGhostReducer} from "../../lib/ghostState"
 
 
 interface NotDragging {
