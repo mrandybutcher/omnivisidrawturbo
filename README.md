@@ -29,6 +29,13 @@
 * [ ] Abstract mousedown to detect clicks and ready for touch support
 * [ ] Dig into performance a bit once reselect done
 * [ ] Less OMG UI
+* [ ] Fix the jankiness after comitting a transform and waiting for it to come back from server
+* [ ] Configure redux-dev-tools in code to omit mousemove actions
+* [ ] Configure redux-dev-tools to omit unpersisted persistent actions
+* [ ] Maybe migrate the persistence to redux middleware?
+* [ ] Have another go at yarn workspaces to share code between client/server
+* [ ] Get a VM with more ram to run the server
+* [ ] Get the server to auto-restart
 
 # Deployment
 * [ ] Setup CI
@@ -81,6 +88,7 @@
 * [ ] Move selection up/down
 * [ ] Press delete key to delete selected elements
 * [x] Toolbar button to enable Selection Tool
+* [ ] Snap to grid
 
 ## Pen Tool 
 * [x] Toolbar button to select pen tool
@@ -188,19 +196,37 @@
 
 ## Presence Pane
 * [x] Pane to allow user to set their name
-* [ ] Persist users name locally
-* [x] See list of other peoples using the app
-* [ ] Click user to establish webrtc connection with them
-* [ ] Show users each others mouse position on canvas
-
+* [x] See list of other people currently using the app
+* [ ] Persist local users name in browser storage
+* [ ] Ability to manually reconnect if disconnected
+* [ ] Automatic reconnection if disconnected
 
 ## Collaboration
-* [x] Propagate mouse position
-* [x] Propagate element changes
-* [x] Propagate selections
-* [x] Propagate selection translate/scale
-* [ ] Incorporate ghost transform into current view
-* [ ] Locking of selected elements?
+* [x] Transient actions are sent to other users
+* [x] Persistent actions sent to server, given sequence number and sent to all users
+* [x] Propagate mouse position with transient action
+* [x] Propagate element changes with persistent action
+* [x] Propagate selections with transient action
+* [x] Propagate selection translate/scale with transient action
+* [x] Show users each others mouse position on canvas
+* [x] High order reducer to keep track of other users transient state
+* [x] High order selector to apply selectors to other users transient state
+* [x] Show other users selection state
+* [x] Show other users selection transform
+* [ ] Locking of elements selected by other users?
+
+## Persistence
+* [ ] Persist persistent actions in memory on server
+* [ ] Persist persistent actions on disk on server
+* [ ] Load current action history from server upon connection
+* [ ] Disable editing while reloading state from server
+* [ ] Run some of the reducers server-side
+* [ ] Support snapshots
+* [ ] Some kind of state checksum
+
+## Keyboard
+* [ ] Keyboard manager / mapper
+* [ ] Arrow keys to move things?
 
 # Common
 * [ ] Authentication
